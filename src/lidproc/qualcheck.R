@@ -13,6 +13,8 @@ setwd(workingdirectory)
 ctg <- readLAScatalog(workingdirectory)
 plot(ctg, map=TRUE)
 
+metadata=ctg@data
+
 las_check(ctg)
 
 plan(multisession)
@@ -21,7 +23,7 @@ opt_filter(ctg) <- "-drop_class 7 18"
 opt_chunk_size(ctg) <- 0
 opt_chunk_buffer(ctg) <- 5
 
-opt_output_files(ctg) <-  paste("G:/My Drive/_Aarhus/Paper1/2_Dataprocessing/qualityCheck/{*}_norm")
+opt_output_files(ctg) <-  paste("G:/My Drive/_Aarhus/Paper1/2_Dataprocessing/qualityCheck/{*}_norm") #modify path (no overlapping reading)
 ctg_norm <- normalize_height(ctg, tin())
 
 opt_output_files(ctg) <-  paste("G:/My Drive/_Aarhus/Paper1/2_Dataprocessing/qualityCheck/{*}_dtm")
