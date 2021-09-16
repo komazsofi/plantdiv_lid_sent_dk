@@ -1,8 +1,22 @@
 library(sf)
 
+# Set working directory
+inputdirectory="O:/Nat_Ecoinformatics/B_Read/Denmark/Elevation/LiDAR/2019/laz/ZIPdownload/"
+outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/unzipped_dir2019/"
+setwd(outputdirectory)
+
+ziplist=list.files(path=inputdirectory,pattern = "*.zip")
+
+for (i in ziplist[1:3]) {
+  print(i)
+  
+  unzip(paste(inputdirectory,i,sep=""))
+  
+}
+
 setwd("C:/_Koma/LAStools/LAStools/bin/")
 
-filelist=list.files(path="O:/Nat_Ecoinformatics-tmp/au700510/unzipped_dir2019/", pattern="\\.laz$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
+filelist=list.files(path=outputdirectory, pattern="\\.laz$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
 
 lasinfo <- data.frame(matrix(ncol = 9, nrow = 0))
 x <- c("BlockID","FileName", "wkt_astext","NumPoints","MinGpstime", "MaxGpstime","Year","Month","Day")
@@ -46,7 +60,7 @@ for (i in 1:length(filelist)) {
 }
 
 df = st_as_sf(lasinfo, wkt = "wkt_astext")
-st_write(df, "O:/Nat_Ecoinformatics-tmp/au700510/unzipped_dir2019/lasinfo.shp")
+st_write(df, paste(outputdirectory,"lasinfo.shp",sep=""))
 
 
 
