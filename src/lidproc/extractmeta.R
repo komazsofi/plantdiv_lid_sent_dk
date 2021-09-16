@@ -5,7 +5,7 @@ setwd("C:/_Koma/LAStools/LAStools/bin/")
 filelist=list.files(path="O:/Nat_Ecoinformatics-tmp/au700510/unzipped_dir2019/", pattern="\\.laz$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
 
 lasinfo <- data.frame(matrix(ncol = 9, nrow = 0))
-x <- c("FileName", "wkt_astext","NumPoints", "xmin", "xmax", "ymin", "ymax", "mingpstime", "maxgpstime")
+x <- c("BlockID","FileName", "wkt_astext","NumPoints","MinGpstime", "MaxGpstime","Year","Month","Day")
 colnames(lasinfo) <- x
 
 for (i in 1:length(filelist)) {
@@ -14,6 +14,8 @@ for (i in 1:length(filelist)) {
   tmp <- system(paste("lasinfo.exe ",filelist[i],sep=""), intern=TRUE, wait=FALSE)
   
   FileName <- paste(filelist[i])
+  
+  BlockID <- substring(FileName,66,73)
   
   NumPoints_str <- tmp[(grep(pattern = "  number of point records", tmp))]
   NumPoints<-as.numeric(unlist(strsplit(NumPoints_str, split=" "))[10])
@@ -31,10 +33,14 @@ for (i in 1:length(filelist)) {
   
   gpsrange <- tmp[(grep(pattern = "  gps_time", tmp))]
   gpsrange2=unlist(strsplit(gpsrange, split=" "))
-  mingpstime=as.character(as.POSIXct(as.numeric(gpsrange2[4])+1000000000,origin="1980-01-06"))
-  maxgpstime=as.character(as.POSIXct(as.numeric(gpsrange2[5])+1000000000,origin="1980-01-06"))
+  MinGpstime=as.character(as.POSIXct(as.numeric(gpsrange2[4])+1000000000,origin="1980-01-06"))
+  MaxGpstime=as.character(as.POSIXct(as.numeric(gpsrange2[5])+1000000000,origin="1980-01-06"))
   
-  newline <- cbind(FileName, wkt_astext,NumPoints, xmin, xmax, ymin, ymax, mingpstime, maxgpstime)
+  Year=substring(MinGpstime,1,4)
+  Month=substring(MinGpstime,6,7)
+  Day=substring(MinGpstime,9,10)
+  
+  newline <- cbind(BlockID,FileName, wkt_astext,NumPoints, MinGpstime, MaxGpstime,Year,Month,Day)
   
   lasinfo <- rbind(lasinfo, newline)
 }
