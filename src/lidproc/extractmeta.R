@@ -1,13 +1,14 @@
 library(sf)
 
 # Set working directory
-inputdirectory="O:/Nat_Ecoinformatics/B_Read/Denmark/Elevation/LiDAR/2019/laz/ZIPdownload/"
-outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/unzipped_dir2019/"
+#inputdirectory="O:/Nat_Ecoinformatics/B_Read/Denmark/Elevation/LiDAR/2019/laz/ZIPdownload/"
+inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test/input/"
+outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test/output/"
 setwd(outputdirectory)
 
 ziplist=list.files(path=inputdirectory,pattern = "*.zip")
 
-for (i in ziplist[1:3]) {
+for (i in ziplist[1:2]) {
   print(i)
   
   unzip(paste(inputdirectory,i,sep=""))
