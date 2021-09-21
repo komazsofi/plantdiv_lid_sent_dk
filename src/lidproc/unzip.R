@@ -1,5 +1,5 @@
 # Set working directory
-#inputdirectory="O:/Nat_Ecoinformatics/B_Read/Denmark/Elevation/LiDAR/2019/laz/ZIPdownload/"
+inputdirectory="O:/Nat_Ecoinformatics/B_Read/Denmark/Elevation/LiDAR/2019/laz/ZIPdownload/"
 outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/unzipped_dir2019/"
 setwd(outputdirectory)
 
