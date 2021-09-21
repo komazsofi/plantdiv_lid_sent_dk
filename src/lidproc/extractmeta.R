@@ -6,14 +6,10 @@ inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test/input/"
 outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test/output/"
 setwd(outputdirectory)
 
-ziplist=list.files(path=inputdirectory,pattern = "*.zip")
+ziplist=list.files(path=inputdirectory,pattern = "*.zip",full.names = TRUE)
+sapply(ziplist, unzip)
 
-for (i in ziplist[1:2]) {
-  print(i)
-  
-  unzip(paste(inputdirectory,i,sep=""))
-  
-}
+# Writing out metainfo into a shp file
 
 setwd("C:/_Koma/LAStools/LAStools/bin/")
 
