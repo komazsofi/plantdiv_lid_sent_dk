@@ -1,5 +1,6 @@
 library(sf)
-
+library(doParallel)
+library(foreach)
 # Set working directory
 #inputdirectory="O:/Nat_Ecoinformatics/B_Read/Denmark/Elevation/LiDAR/2019/laz/ZIPdownload/"
 inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test/input/"
@@ -19,8 +20,19 @@ lasinfo <- data.frame(matrix(ncol = 9, nrow = 0))
 x <- c("BlockID","FileName", "wkt_astext","NumPoints","MinGpstime", "MaxGpstime","Year","Month","Day")
 colnames(lasinfo) <- x
 
-for (i in 1:length(filelist)) {
-  print(i)
+## number of clusters to use
+
+# I usually use
+
+Nclust <- parallel::detectCores()/2
+
+# And then use that for the makeCluster function
+cl <- makeCluster(2)
+
+registerDoParallel(cl)
+
+lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf")) %dopar% {
+  #print(i)
   
   tmp <- system(paste("lasinfo.exe ",filelist[i],sep=""), intern=TRUE, wait=FALSE)
   
@@ -53,9 +65,11 @@ for (i in 1:length(filelist)) {
   
   newline <- cbind(BlockID,FileName, wkt_astext,NumPoints, MinGpstime, MaxGpstime,Year,Month,Day)
   
-  lasinfo <- rbind(lasinfo, newline)
+  newline
 }
 
+
+stopCluster(cl)
 df = st_as_sf(lasinfo, wkt = "wkt_astext")
 st_write(df, paste(outputdirectory,"lasinfo.shp",sep=""))
 
