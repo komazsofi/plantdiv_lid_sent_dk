@@ -3,12 +3,13 @@ library(doParallel)
 library(foreach)
 # Set working directory
 #inputdirectory="O:/Nat_Ecoinformatics/B_Read/Denmark/Elevation/LiDAR/2019/laz/ZIPdownload/"
-inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test/input/"
-outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test/output/"
+#inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test/input/"
+#outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test/output/"
+outputdirectory="C:/_Koma/GitHub/komazsofi/ecodes-dk-lidar/data/laz/"
 setwd(outputdirectory)
 
-ziplist=list.files(path=inputdirectory,pattern = "*.zip",full.names = TRUE)
-sapply(ziplist, unzip)
+#ziplist=list.files(path=inputdirectory,pattern = "*.zip",full.names = TRUE)
+#sapply(ziplist, unzip)
 
 # Writing out metainfo into a shp file
 
@@ -20,21 +21,16 @@ lasinfo <- data.frame(matrix(ncol = 9, nrow = 0))
 x <- c("BlockID","FileName", "wkt_astext","NumPoints","MinGpstime", "MaxGpstime","Year","Month","Day")
 colnames(lasinfo) <- x
 
-## number of clusters to use
-
-# I usually use
+## set up parameters for the parallel process
 
 Nclust <- parallel::detectCores()/2
-
-# And then use that for the makeCluster function
 cl <- makeCluster(2)
-
 registerDoParallel(cl)
 
 lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf")) %dopar% {
-  #print(i)
+  print(i)
   
-  tmp <- system(paste("lasinfo.exe ",filelist[i],sep=""), intern=TRUE, wait=FALSE)
+  tmp <- system(paste("lasinfo.exe ",filelist[i]," -stdout",sep=""), intern=TRUE, wait=FALSE)
   
   FileName <- paste(filelist[i])
   
@@ -68,9 +64,12 @@ lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf")) 
   newline
 }
 
-
 stopCluster(cl)
-df = st_as_sf(lasinfo, wkt = "wkt_astext")
+
+# export
+
+lasinfo_df=as.data.frame(lasinfo)
+df = st_as_sf(lasinfo_df, wkt = "wkt_astext")
 st_write(df, paste(outputdirectory,"lasinfo.shp",sep=""))
 
 
