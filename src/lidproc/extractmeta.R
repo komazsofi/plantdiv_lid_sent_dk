@@ -6,8 +6,8 @@ inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test/input/"
 outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test/output/"
 setwd(outputdirectory)
 
-#ziplist=list.files(path=inputdirectory,pattern = "*.zip",full.names = TRUE)
-#sapply(ziplist, unzip)
+ziplist=list.files(path=inputdirectory,pattern = "*.zip",full.names = TRUE)
+sapply(ziplist, unzip)
 
 # Writing out metainfo into a shp file
 
