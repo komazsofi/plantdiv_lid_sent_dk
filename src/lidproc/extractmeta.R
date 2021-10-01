@@ -17,25 +17,25 @@ setwd("C:/_Koma/LAStools/LAStools/bin/")
 
 filelist=list.files(path=outputdirectory, pattern="\\.laz$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
 
-lasinfo <- data.frame(matrix(ncol = 23, nrow = 0))
+lasinfo <- data.frame(matrix(ncol = 24, nrow = 0))
 x <- c("BlockID","FileName", "wkt_astext","NumPoints","MinGpstime", "MaxGpstime","Year","Month","Day","zmin","zmax","maxRetNum","maxNumofRet","minClass","maxClass",
-       "minScanAngle","maxScanAngle","FirstRet","InterRet","LastRet","SingleRet","allPointDens","lastonlyPointDens")
+       "minScanAngle","maxScanAngle","FirstRet","InterRet","LastRet","SingleRet","allPointDens","lastonlyPointDens","NofFile")
 colnames(lasinfo) <- x
 
 ## set up parameters for the parallel process
 
-Nclust <- parallel::detectCores()/2
-cl <- makeCluster(2)
+Nclust <- parallel::detectCores()-2
+cl <- makeCluster(Nclust)
 registerDoParallel(cl)
 
 lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf")) %dopar% {
-  print(i)
+  #print(i)
   
-  tmp <- system(paste("lasinfo.exe ",filelist[i]," -stdout -compute_density",sep=""), intern=TRUE, wait=FALSE)
+  tmp <- system(paste("lasinfo.exe ",filelist[i]," -stdout -compute_density -cores 4",sep=""), intern=TRUE, wait=FALSE)
   
   FileName <- paste(filelist[i])
   
-  BlockID <- substring(FileName,66,73) #needs to be adjust based on the used path!!!!
+  BlockID <- substring(FileName,64,72) #needs to be adjust based on the used path!!!!
   
   NumPoints_str <- tmp[(grep(pattern = "  number of point records", tmp))]
   NumPoints<-as.numeric(unlist(strsplit(NumPoints_str, split=" "))[10])
@@ -93,8 +93,13 @@ lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf")) 
   allPointDens <-as.numeric(unlist(strsplit(PointDens_str, split=" "))[5])
   lastonlyPointDens <-as.numeric(unlist(strsplit(PointDens_str, split=" "))[8])
   
+  NofFile_str <- tmp[(grep(pattern = "  point_source_ID", tmp))]
+  min_NofFile <-as.numeric(unlist(strsplit(NofFile_str, split=" "))[4])
+  max_NofFile <-as.numeric(unlist(strsplit(NofFile_str, split=" "))[10])
+  NofFile=max_NofFile-min_NofFile
+  
   newline <- cbind(BlockID,FileName,wkt_astext,NumPoints,MinGpstime,MaxGpstime,Year,Month,Day,zmin,zmax,maxRetNum,maxNumofRet,minClass,maxClass,
-                   minScanAngle,maxScanAngle,FirstRet,InterRet,LastRet,SingleRet,allPointDens,lastonlyPointDens)
+                   minScanAngle,maxScanAngle,FirstRet,InterRet,LastRet,SingleRet,allPointDens,lastonlyPointDens,NofFile)
   
   newline
 }
@@ -104,6 +109,8 @@ stopCluster(cl)
 # export
 
 lasinfo_df=as.data.frame(lasinfo)
+lasinfo_df[, c(4,10:13,16:24)] <- sapply(lasinfo_df[, c(4,10:13,16:24)], as.numeric)
+
 df = st_as_sf(lasinfo_df, wkt = "wkt_astext")
 st_crs(df) <- 25832 
 st_write(df, paste(outputdirectory,"lasinfo.shp",sep=""))
