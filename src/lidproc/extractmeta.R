@@ -30,7 +30,7 @@ Nclust <- parallel::detectCores()-2
 cl <- makeCluster(Nclust)
 registerDoParallel(cl)
 
-lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf")) %dopar% {
+lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf"), .errorhandling = "remove") %dopar% {
   #print(i)
   
   tmp <- system(paste("lasinfo.exe ",filelist[i]," -stdout -compute_density",sep=""), intern=TRUE, wait=FALSE)
@@ -99,9 +99,18 @@ lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf")) 
   min_NofFile <-as.numeric(unlist(strsplit(NofFile_str, split=" "))[4])
   max_NofFile <-as.numeric(unlist(strsplit(NofFile_str, split=" "))[10])
   NofFile=max_NofFile-min_NofFile
+  
+  if (NumPoints>0) {
     
-  newline <- cbind(BlockID,FileName,wkt_astext,NumPoints,MinGpstime,MaxGpstime,Year,Month,Day,zmin,zmax,maxRetNum,maxNumofRet,minClass,maxClass,
+    newline <- cbind(BlockID,FileName,wkt_astext,NumPoints,MinGpstime,MaxGpstime,Year,Month,Day,zmin,zmax,maxRetNum,maxNumofRet,minClass,maxClass,
                      minScanAngle,maxScanAngle,FirstRet,InterRet,LastRet,SingleRet,allPointDens,lastonlyPointDens,NofFile)
+    
+  } else {
+    
+    newline <- cbind(BlockID,FileName,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,
+                     NA,NA,NA,NA,NA,NA,NA,NA,NA)
+    
+  }
   
   newline
 }
@@ -110,13 +119,16 @@ stopCluster(cl)
 
 # export
 
+st=format(Sys.time(), "%Y%m%d_%H%M")
+
 lasinfo_df=as.data.frame(lasinfo)
 lasinfo_df[, c(4,10:13,16:24)] <- sapply(lasinfo_df[, c(4,10:13,16:24)], as.numeric)
+colnames(lasinfo_df) <- x
+write.csv(lasinfo_df,paste(outputdirectory,"lasinfo_",st,".csv",sep=""))
 
+lasinfo_df=na.omit(lasinfo_df) 
 df = st_as_sf(lasinfo_df, wkt = "wkt_astext")
 st_crs(df) <- 25832
-
-st=format(Sys.time(), "%Y%m%d_%H%M")
 st_write(df, paste(outputdirectory,"lasinfo_",st,".shp",sep=""))
 
 end_time <- Sys.time()
