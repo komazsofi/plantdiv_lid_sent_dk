@@ -31,7 +31,6 @@ cl <- makeCluster(Nclust)
 registerDoParallel(cl)
 
 lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf"), .errorhandling = "remove") %dopar% {
-  #print(i)
   
   tmp <- system(paste("lasinfo.exe ",filelist[i]," -stdout -compute_density",sep=""), intern=TRUE, wait=FALSE)
     
@@ -126,13 +125,14 @@ lasinfo_df[, c(4,10:13,16:24)] <- sapply(lasinfo_df[, c(4,10:13,16:24)], as.nume
 colnames(lasinfo_df) <- x
 write.csv(lasinfo_df,paste(outputdirectory,"lasinfo_",st,".csv",sep=""))
 
-lasinfo_df=na.omit(lasinfo_df) 
-df = st_as_sf(lasinfo_df, wkt = "wkt_astext")
+lasinfo_df_c=lasinfo_df[!is.na(lasinfo_df$wkt_astext),]
+df = st_as_sf(lasinfo_df_c, wkt = "wkt_astext")
 st_crs(df) <- 25832
 st_write(df, paste(outputdirectory,"lasinfo_",st,".shp",sep=""))
 
 end_time <- Sys.time()
 print(end_time - start_time)
+
 
 
 
