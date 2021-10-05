@@ -1,6 +1,9 @@
 library(sf)
-library(doParallel)
+#library(doParallel)
 library(foreach)
+library(doSNOW)
+library(tcltk)
+
 # Set working directory
 #inputdirectory="O:/Nat_Ecoinformatics/B_Read/Denmark/Elevation/LiDAR/2019/laz/ZIPdownload/"
 #inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test/input/"
@@ -15,7 +18,7 @@ start_time <- Sys.time()
 
 # Writing out metainfo into a shp file
 
-setwd("C:/_Koma/LAStools/LAStools/bin/")
+setwd("C:/_Koma/GitHub/komazsofi/ecodes-dk-lidar/data/laz/")
 
 filelist=list.files(path=outputdirectory, pattern="\\.laz$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
 
@@ -27,10 +30,18 @@ colnames(lasinfo) <- x
 ## set up parameters for the parallel process
 
 Nclust <- parallel::detectCores()-2
-cl <- makeCluster(Nclust)
-registerDoParallel(cl)
+#cl <- makeCluster(Nclust)
+#registerDoParallel(cl)
 
-lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf"), .errorhandling = "remove") %dopar% {
+cl <- makeSOCKcluster(Nclust)
+registerDoSNOW(cl)
+
+ntasks <- length(filelist)
+pb <- tkProgressBar(max=ntasks)
+progress <- function(n) setTkProgressBar(pb, n)
+opts <- list(progress=progress)
+
+lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf"), .options.snow=opts) %dopar% {
   
   tmp <- system(paste("lasinfo.exe ",filelist[i]," -stdout -compute_density",sep=""), intern=TRUE, wait=FALSE)
     
@@ -112,6 +123,7 @@ lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf"), 
   }
   
   newline
+
 }
 
 stopCluster(cl)
