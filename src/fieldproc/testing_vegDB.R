@@ -34,7 +34,11 @@ veg_db_plantdiv_mintimes=veg_db_plantdiv_comp[(veg_db_plantdiv_comp$n>4),]
 
 # visualize
 
-ggplot(data=veg_db_plantdiv_mintimes[(veg_db_plantdiv_mintimes$site==45),],aes(x=year,y=richness,group=plot,color=as.factor(plot)))+geom_line()+geom_point()
+ggplot(data=veg_db_plantdiv_mintimes[(veg_db_plantdiv_mintimes$site==45),],aes(x=year,y=richness,group=plot,color=as.factor(plot)))+
+  geom_point(size=1)+geom_line(size=1)+
+  ylab("Richness")+xlab("Year")+
+  labs(colour="Plots within the site")+
+  theme_bw(base_size = 17)+ggtitle("Site=45")
 
 # Map visualizations
 
@@ -42,6 +46,11 @@ veg_db_plantdiv_mintimes_perplots <- veg_db_plantdiv_mintimes %>% group_by(plot)
 veg_db_plantdiv_mintimes_perplots_sf <- st_as_sf(veg_db_plantdiv_mintimes_perplots, coords = c("UTMx", "UTMy"), crs = 25832)
 
 ggplot()+geom_sf(data = Denmark)+geom_sf(data = veg_db_plantdiv_mintimes_perplots_sf, aes(color = n))
+
+ggplot()+geom_sf(data = Denmark)+
+  geom_sf(data = veg_db_plantdiv_mintimes_perplots_sf[(veg_db_plantdiv_mintimes_perplots_sf$site==45),], aes(color = n))+
+  #coord_sf(xlim = c(10.45, 10.6),ylim = c(55.9, 56),default_crs = sf::st_crs(4326))+
+  scale_colour_gradientn(colours=heat.colors(4),trans = 'reverse')
 
 # export to QGIS
 
