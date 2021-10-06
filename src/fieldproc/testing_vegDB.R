@@ -40,6 +40,12 @@ ggplot(data=veg_db_plantdiv_mintimes[(veg_db_plantdiv_mintimes$site==45),],aes(x
   labs(colour="Plots within the site")+
   theme_bw(base_size = 17)+ggtitle("Site=45")
 
+ggplot(data=veg_db_plantdiv_mintimes[(veg_db_plantdiv_mintimes$site==45),],aes(x=year,y=richness,group=plot,color=as.factor(plot)))+
+  geom_smooth(method = lm,se = FALSE)+
+  ylab("Richness")+xlab("Year")+
+  labs(colour="Plots within the site")+
+  theme_bw(base_size = 17)+ggtitle("Site=45")
+
 # Map visualizations
 
 veg_db_plantdiv_mintimes_perplots <- veg_db_plantdiv_mintimes %>% group_by(plot) %>% summarise(UTMx=max(UTMx),UTMy=max(UTMy),site=max(site),n=max(n),meanrich_overtime=mean(richness))
