@@ -18,7 +18,7 @@ start_time <- Sys.time()
 
 # Writing out metainfo into a shp file
 
-setwd("C:/_Koma/GitHub/komazsofi/ecodes-dk-lidar/data/laz/")
+setwd("C:/_Koma/LAStools/LAStools/bin/")
 
 filelist=list.files(path=outputdirectory, pattern="\\.laz$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
 
@@ -33,7 +33,7 @@ Nclust <- parallel::detectCores()-2
 #cl <- makeCluster(Nclust)
 #registerDoParallel(cl)
 
-cl <- makeSOCKcluster(Nclust)
+cl <-makeCluster(Nclust,outfile="")
 registerDoSNOW(cl)
 
 ntasks <- length(filelist)
@@ -41,7 +41,9 @@ pb <- tkProgressBar(max=ntasks)
 progress <- function(n) setTkProgressBar(pb, n)
 opts <- list(progress=progress)
 
-lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf"), .options.snow=opts) %dopar% {
+lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf"), .options.snow=opts, .errorhandling = "remove") %dopar% {
+  
+  print(filelist[i])
   
   tmp <- system(paste("lasinfo.exe ",filelist[i]," -stdout -compute_density",sep=""), intern=TRUE, wait=FALSE)
     
