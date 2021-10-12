@@ -1,4 +1,4 @@
-# The script aims to derive basic information regarding the las/laz files with using lasinfo from LAStools. 
+# The script aims to derive basic information regarding the las/laz files with lasinfo from LAStools. 
 #
 # To use the script the inputdirectory, outputdirectory and lasinfoloc needs to be rightly set (see # Set working directories section). 
 #
