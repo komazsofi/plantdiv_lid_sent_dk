@@ -1,26 +1,29 @@
+# The script aims to derive basic information regarding the las/laz files with using lasinfo from LAStools. 
+#
+# To use the script the inputdirectory, outputdirectory and lasinfoloc needs to be rightly set (see # Set working directories section). 
+#
+# To run the script from command line (Command Prompt) on a windows machine the following command can be used (after navigating the location of the Rscript file ((for me C:\Program Files\R\R-4.1.1\bin)): 
+# C:\Program Files\R\R-4.1.1\bin>Rscript O:\Nat_Ecoinformatics-tmp\extractmeta_server.R
+# O:\Nat_Ecoinformatics-tmp\ - needs to be set to the path of where the R file located
+
 library(sf)
 #library(doParallel)
 library(foreach)
 library(doSNOW)
 library(tcltk)
 
-# Set working directory
-#inputdirectory="O:/Nat_Ecoinformatics/B_Read/Denmark/Elevation/LiDAR/2019/laz/ZIPdownload/"
-#inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test/input/"
-#outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test/output/"
-outputdirectory="C:/_Koma/GitHub/komazsofi/ecodes-dk-lidar/data/laz/"
-setwd(outputdirectory)
+# Set working directories
+inputdirectory="C:/_Koma/GitHub/komazsofi/ecodes-dk-lidar/data/laz/" #set this to the path where the laz (unzipped) files are located 
+outputdirectory="C:/_Koma/GitHub/komazsofi/ecodes-dk-lidar/data/laz/" #set this to the path where the resulted files wished to be extracted
+lasinfoloc="C:/_Koma/LAStools/LAStools/bin/" #set this to the path where the lasinfo.exe file is located 
 
 start_time <- Sys.time()
 
-#ziplist=list.files(path=inputdirectory,pattern = "*.zip",full.names = TRUE)
-#sapply(ziplist, unzip)
-
 # Writing out metainfo into a shp file
 
-setwd("C:/_Koma/LAStools/LAStools/bin/")
+setwd(lasinfoloc)
 
-filelist=list.files(path=outputdirectory, pattern="\\.laz$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
+filelist=list.files(path=inputdirectory, pattern="\\.laz$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
 
 lasinfo <- data.frame(matrix(ncol = 24, nrow = 0))
 x <- c("BlockID","FileName", "wkt_astext","NumPoints","MinGpstime", "MaxGpstime","Year","Month","Day","zmin","zmax","maxRetNum","maxNumofRet","minClass","maxClass",
