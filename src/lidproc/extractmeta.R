@@ -1,6 +1,7 @@
 # The script aims to derive basic information regarding the las/laz files with lasinfo from LAStools. 
 #
 # To use the script the inputdirectory, outputdirectory and lasinfoloc needs to be rightly set (see # Set working directories section). 
+# Also in line 56 BlockID the substring() function needs to be adjusted according to the filepath
 #
 # To run the script from command line (Command Prompt) on a windows machine the following command can be used (after navigating the location of the Rscript file ((for me C:\Program Files\R\R-4.1.1\bin)): 
 # C:\Program Files\R\R-4.1.1\bin>Rscript O:\Nat_Ecoinformatics-tmp\extractmeta_server.R
