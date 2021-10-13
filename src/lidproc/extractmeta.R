@@ -1,7 +1,7 @@
 # The script aims to derive basic information regarding the las/laz files with lasinfo from LAStools. 
 #
 # To use the script the inputdirectory, outputdirectory and lasinfoloc needs to be rightly set (see # Set working directories section). 
-# Also in line 56 BlockID the substring() function needs to be adjusted according to the filepath
+# Also in line 56 BlockID the substring() function needs to be adjusted according to the file path
 #
 # To run the script from command line (Command Prompt) on a windows machine the following command can be used (after navigating the location of the Rscript file ((for me C:\Program Files\R\R-4.1.1\bin)): 
 # C:\Program Files\R\R-4.1.1\bin>Rscript O:\Nat_Ecoinformatics-tmp\extractmeta_server.R
@@ -14,8 +14,8 @@ library(doSNOW)
 library(tcltk)
 
 # Set working directories
-inputdirectory="C:/_Koma/GitHub/komazsofi/ecodes-dk-lidar/data/laz/" #set this to the path where the laz (unzipped) files are located 
-outputdirectory="C:/_Koma/GitHub/komazsofi/ecodes-dk-lidar/data/laz/" #set this to the path where the resulted files wished to be extracted
+inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test2/" #set this to the path where the laz (unzipped) files are located 
+outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test2/" #set this to the path where the resulted files wished to be extracted
 lasinfoloc="C:/_Koma/LAStools/LAStools/bin/" #set this to the path where the lasinfo.exe file is located 
 
 start_time <- Sys.time()
@@ -26,9 +26,9 @@ setwd(lasinfoloc)
 
 filelist=list.files(path=inputdirectory, pattern="\\.laz$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
 
-lasinfo <- data.frame(matrix(ncol = 24, nrow = 0))
+lasinfo <- data.frame(matrix(ncol = 25, nrow = 0))
 x <- c("BlockID","FileName", "wkt_astext","NumPoints","MinGpstime", "MaxGpstime","Year","Month","Day","zmin","zmax","maxRetNum","maxNumofRet","minClass","maxClass",
-       "minScanAngle","maxScanAngle","FirstRet","InterRet","LastRet","SingleRet","allPointDens","lastonlyPointDens","NofFile")
+       "minScanAngle","maxScanAngle","FirstRet","InterRet","LastRet","SingleRet","allPointDens","lastonlyPointDens","minFileID","maxFileID")
 colnames(lasinfo) <- x
 
 ## set up parameters for the parallel process
@@ -112,14 +112,15 @@ lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf"), 
   lastonlyPointDens <-as.numeric(unlist(strsplit(PointDens_str, split=" "))[8])
     
   NofFile_str <- tmp[(grep(pattern = "  point_source_ID", tmp))]
-  min_NofFile <-as.numeric(unlist(strsplit(NofFile_str, split=" "))[4])
-  max_NofFile <-as.numeric(unlist(strsplit(NofFile_str, split=" "))[10])
-  NofFile=max_NofFile-min_NofFile
+  minFileID <-as.numeric(unlist(strsplit(NofFile_str, split=" "))[4])
+  maxFileID <-as.numeric(unlist(strsplit(NofFile_str, split=" "))[10])
+  
+  
   
   if (NumPoints>0) {
     
     newline <- cbind(BlockID,FileName,wkt_astext,NumPoints,MinGpstime,MaxGpstime,Year,Month,Day,zmin,zmax,maxRetNum,maxNumofRet,minClass,maxClass,
-                     minScanAngle,maxScanAngle,FirstRet,InterRet,LastRet,SingleRet,allPointDens,lastonlyPointDens,NofFile)
+                     minScanAngle,maxScanAngle,FirstRet,InterRet,LastRet,SingleRet,allPointDens,lastonlyPointDens,minFileID,maxFileID)
     
   } else {
     
