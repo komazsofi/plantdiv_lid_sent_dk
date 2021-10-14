@@ -12,6 +12,7 @@ library(sf)
 library(foreach)
 library(doSNOW)
 library(tcltk)
+library(lidR)
 
 # Set working directories
 inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test2/" #set this to the path where the laz (unzipped) files are located 
@@ -26,9 +27,9 @@ setwd(lasinfoloc)
 
 filelist=list.files(path=inputdirectory, pattern="\\.laz$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
 
-lasinfo <- data.frame(matrix(ncol = 25, nrow = 0))
+lasinfo <- data.frame(matrix(ncol = 27, nrow = 0))
 x <- c("BlockID","FileName", "wkt_astext","NumPoints","MinGpstime", "MaxGpstime","Year","Month","Day","zmin","zmax","maxRetNum","maxNumofRet","minClass","maxClass",
-       "minScanAngle","maxScanAngle","FirstRet","InterRet","LastRet","SingleRet","allPointDens","lastonlyPointDens","minFileID","maxFileID")
+       "minScanAngle","maxScanAngle","FirstRet","InterRet","LastRet","SingleRet","allPointDens","lastonlyPointDens","minFileID","maxFileID","epgs","wkt")
 colnames(lasinfo) <- x
 
 ## set up parameters for the parallel process
@@ -45,9 +46,11 @@ pb <- tkProgressBar(max=ntasks)
 progress <- function(n) setTkProgressBar(pb, n)
 opts <- list(progress=progress)
 
-lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf"), .options.snow=opts, .errorhandling = "remove") %dopar% {
+lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf","lidR"), .options.snow=opts, .errorhandling = "remove") %dopar% {
   
   print(filelist[i])
+  
+  lidrmeta=readLASheader(filelist[i])
   
   tmp <- system(paste("lasinfo.exe ",filelist[i]," -stdout -compute_density",sep=""), intern=TRUE, wait=FALSE)
     
@@ -115,17 +118,18 @@ lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf"), 
   minFileID <-as.numeric(unlist(strsplit(NofFile_str, split=" "))[4])
   maxFileID <-as.numeric(unlist(strsplit(NofFile_str, split=" "))[10])
   
-  
+  epgs=epsg(lidrmeta)
+  wkt=wkt(lidrmeta)
   
   if (NumPoints>0) {
     
     newline <- cbind(BlockID,FileName,wkt_astext,NumPoints,MinGpstime,MaxGpstime,Year,Month,Day,zmin,zmax,maxRetNum,maxNumofRet,minClass,maxClass,
-                     minScanAngle,maxScanAngle,FirstRet,InterRet,LastRet,SingleRet,allPointDens,lastonlyPointDens,minFileID,maxFileID)
+                     minScanAngle,maxScanAngle,FirstRet,InterRet,LastRet,SingleRet,allPointDens,lastonlyPointDens,minFileID,maxFileID,epgs,wkt)
     
   } else {
     
     newline <- cbind(BlockID,FileName,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,
-                     NA,NA,NA,NA,NA,NA,NA,NA,NA)
+                     NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA)
     
   }
   
