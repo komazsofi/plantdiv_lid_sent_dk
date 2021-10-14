@@ -15,7 +15,7 @@ library(tcltk)
 library(lidR)
 
 # Set working directories
-inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test2/" #set this to the path where the laz (unzipped) files are located 
+inputdirectory="C:/_Koma/GitHub/komazsofi/ecodes-dk-lidar/data/laz/" #set this to the path where the laz (unzipped) files are located 
 outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test2/" #set this to the path where the resulted files wished to be extracted
 lasinfoloc="C:/_Koma/LAStools/LAStools/bin/" #set this to the path where the lasinfo.exe file is located 
 
