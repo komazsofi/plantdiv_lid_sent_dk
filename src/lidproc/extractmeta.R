@@ -1,7 +1,6 @@
 # The script aims to derive basic information regarding the las/laz files with lasinfo from LAStools. 
 #
 # To use the script the inputdirectory, outputdirectory and lasinfoloc needs to be rightly set (see # Set working directories section). 
-# Also in line 56 BlockID the substring() function needs to be adjusted according to the file path
 #
 # To run the script from command line (Command Prompt) on a windows machine the following command can be used (after navigating the location of the Rscript file ((for me C:\Program Files\R\R-4.1.1\bin)): 
 # C:\Program Files\R\R-4.1.1\bin>Rscript O:\Nat_Ecoinformatics-tmp\extractmeta_server.R
@@ -15,7 +14,7 @@ library(tcltk)
 library(lidR)
 
 # Set working directories
-inputdirectory="C:/_Koma/GitHub/komazsofi/ecodes-dk-lidar/data/laz/" #set this to the path where the laz (unzipped) files are located 
+inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test2/" #set this to the path where the laz (unzipped) files are located 
 outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test2/" #set this to the path where the resulted files wished to be extracted
 lasinfoloc="C:/_Koma/LAStools/LAStools/bin/" #set this to the path where the lasinfo.exe file is located 
 
@@ -25,7 +24,8 @@ start_time <- Sys.time()
 
 setwd(lasinfoloc)
 
-filelist=list.files(path=inputdirectory, pattern="\\.laz$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
+#filelist=list.files(path=inputdirectory, pattern="\\.laz$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
+filelist=list.files(path=inputdirectory, pattern="\\.las$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
 
 lasinfo <- data.frame(matrix(ncol = 27, nrow = 0))
 x <- c("BlockID","FileName", "wkt_astext","NumPoints","MinGpstime", "MaxGpstime","Year","Month","Day","zmin","zmax","maxRetNum","maxNumofRet","minClass","maxClass",
@@ -56,7 +56,7 @@ lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf","l
     
   FileName <- paste(filelist[i])
     
-  BlockID <- substring(FileName,64,72) #needs to be adjust based on the used path!!!!
+  BlockID <- substring(FileName,nchar(FileName)-11,nchar(FileName)-4) 
     
   NumPoints_str <- tmp[(grep(pattern = "  number of point records", tmp))]
   NumPoints<-as.numeric(unlist(strsplit(NumPoints_str, split=" "))[10])
