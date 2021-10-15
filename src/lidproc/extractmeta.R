@@ -1,13 +1,12 @@
 # The script aims to derive basic information regarding the las/laz files with lasinfo from LAStools. 
 #
-# To use the script the inputdirectory, outputdirectory, lasinfoloc and lastype needs to be rightly set (see # Set working directories section). 
+# To use the script the inputdirectory, outputdirectory, lasinfoloc, lastype and dirname needs to be rightly set (see # Set working directories section). 
 #
 # To run the script from command line (Command Prompt) on a windows machine the following command can be used (after navigating the location of the Rscript file ((for me C:\Program Files\R\R-4.1.1\bin)): 
 # C:\Program Files\R\R-4.1.1\bin>Rscript O:\Nat_Ecoinformatics-tmp\extractmeta_server.R
 # O:\Nat_Ecoinformatics-tmp\ - needs to be set to the path of where the R file located
 
 library(sf)
-#library(doParallel)
 library(foreach)
 library(doSNOW)
 library(tcltk)
@@ -18,6 +17,7 @@ inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test2/" #set this to the path
 outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test2/" #set this to the path where the resulted files wished to be extracted
 lasinfoloc="C:/_Koma/LAStools/LAStools/bin/" #set this to the path where the lasinfo.exe file is located 
 lastype="las" #set this either laz or las depending on how the lidar data is stored
+dirname="test2" #set this based on the input directory name to name the file based on the directory origin
 
 start_time <- Sys.time()
 
@@ -144,14 +144,14 @@ stopCluster(cl)
 st=format(Sys.time(), "%Y%m%d_%H%M")
 
 lasinfo_df=as.data.frame(lasinfo)
-lasinfo_df[, c(4,10:13,16:24)] <- sapply(lasinfo_df[, c(4,10:13,16:24)], as.numeric)
+lasinfo_df[, c(4,10:13,16:25)] <- sapply(lasinfo_df[, c(4,10:13,16:25)], as.numeric)
 colnames(lasinfo_df) <- x
-write.csv(lasinfo_df,paste(outputdirectory,"lasinfo_",st,".csv",sep=""))
+write.csv(lasinfo_df,paste(outputdirectory,dirname,"_",st,".csv",sep=""))
 
 lasinfo_df_c=lasinfo_df[!is.na(lasinfo_df$wkt_astext),]
 df = st_as_sf(lasinfo_df_c, wkt = "wkt_astext")
 st_crs(df) <- 25832
-st_write(df, paste(outputdirectory,"lasinfo_",st,".shp",sep=""))
+st_write(df, paste(outputdirectory,dirname,"_",st,".shp",sep=""))
 
 end_time <- Sys.time()
 print(end_time - start_time)
