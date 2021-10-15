@@ -36,7 +36,7 @@ colnames(lasinfo) <- x
 
 Nclust <- parallel::detectCores()-2
 
-cl <-makeCluster(Nclust,outfile="")
+cl <-makeCluster(Nclust,outfile=paste(outputdirectory,dirname,"_log.txt",sep=""))
 registerDoSNOW(cl)
 
 ntasks <- length(filelist)
