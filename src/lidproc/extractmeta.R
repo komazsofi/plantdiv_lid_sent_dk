@@ -35,8 +35,6 @@ colnames(lasinfo) <- x
 ## set up parameters for the parallel process
 
 Nclust <- parallel::detectCores()-2
-#cl <- makeCluster(Nclust)
-#registerDoParallel(cl)
 
 cl <-makeCluster(Nclust,outfile="")
 registerDoSNOW(cl)
