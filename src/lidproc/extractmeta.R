@@ -1,6 +1,6 @@
 # The script aims to derive basic information regarding the las/laz files with lasinfo from LAStools. 
 #
-# To use the script the inputdirectory, outputdirectory and lasinfoloc needs to be rightly set (see # Set working directories section). 
+# To use the script the inputdirectory, outputdirectory, lasinfoloc and lastype needs to be rightly set (see # Set working directories section). 
 #
 # To run the script from command line (Command Prompt) on a windows machine the following command can be used (after navigating the location of the Rscript file ((for me C:\Program Files\R\R-4.1.1\bin)): 
 # C:\Program Files\R\R-4.1.1\bin>Rscript O:\Nat_Ecoinformatics-tmp\extractmeta_server.R
@@ -17,6 +17,7 @@ library(lidR)
 inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test2/" #set this to the path where the laz (unzipped) files are located 
 outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/test2/" #set this to the path where the resulted files wished to be extracted
 lasinfoloc="C:/_Koma/LAStools/LAStools/bin/" #set this to the path where the lasinfo.exe file is located 
+lastype="las" #set this either laz or las depending on how the lidar data is stored
 
 start_time <- Sys.time()
 
@@ -24,8 +25,7 @@ start_time <- Sys.time()
 
 setwd(lasinfoloc)
 
-#filelist=list.files(path=inputdirectory, pattern="\\.laz$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
-filelist=list.files(path=inputdirectory, pattern="\\.las$", full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
+filelist=list.files(path=inputdirectory, pattern=paste("\\.",lastype,"$",sep=""), full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
 
 lasinfo <- data.frame(matrix(ncol = 27, nrow = 0))
 x <- c("BlockID","FileName", "wkt_astext","NumPoints","MinGpstime", "MaxGpstime","Year","Month","Day","zmin","zmax","maxRetNum","maxNumofRet","minClass","maxClass",
