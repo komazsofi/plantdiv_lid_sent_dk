@@ -100,18 +100,24 @@ st_crs(veg_db_plot_c_sf) <- 25832
 
 # Visualization
 
-ggplot(veg_db_c, aes(x = year, y = StarRichness)) + geom_path(aes(group= as.factor(plot), color = as.factor(plot))) + geom_point(aes(group= as.factor(plot), color = as.factor(plot))) + 
+ggplot(veg_db_c[(veg_db_c$trend=="Upwards" | veg_db_c$trend=="Downwards"),], aes(x = year, y = StarRichness)) + geom_path(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + geom_point(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + 
   theme_bw() + theme(legend.position = "none") + facet_wrap(~trend)
+
+ggplot(veg_db_c[(veg_db_c$trend=="Upwards"),], aes(x = year, y = StarRichness)) + geom_path(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + geom_point(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + 
+  theme_bw() + facet_wrap(~terhabtype)+ theme(legend.position = "none")
 
 # Make map
 
 Denmark <- readRDS("O:/Nat_Ecoinformatics-tmp/au700510/fielddata_process/DK_Shape.rds")
 
 ggplot()+geom_sf(data = Denmark)+
-  geom_sf(data = veg_db_plot_c_sf[veg_db_plot_c_sf$trend=="Upwards",], color = "green4")
+  geom_sf(data = veg_db_plot_c_sf[veg_db_plot_c_sf$trend=="Upwards",], color = "green4",size=2)+theme_bw()
 
 ggplot()+geom_sf(data = Denmark)+
-  geom_sf(data = veg_db_plot_c_sf[veg_db_plot_c_sf$trend=="Downwards",], color = "slateblue4")
+  geom_sf(data = veg_db_plot_c_sf[veg_db_plot_c_sf$trend=="Downwards",], color = "slateblue4",size=2)+theme_bw()
+
+ggplot()+geom_sf(data = Denmark)+
+  geom_sf(data = veg_db_plot_c_sf,size=1,aes(color=terhabtype))+theme_bw()
 
 
 
