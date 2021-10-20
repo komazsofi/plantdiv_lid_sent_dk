@@ -119,6 +119,11 @@ ggplot()+geom_sf(data = Denmark)+
 ggplot()+geom_sf(data = Denmark)+
   geom_sf(data = veg_db_plot_c_sf,size=1,aes(color=terhabtype))+theme_bw()
 
+ggplot()+geom_sf(data = Denmark)+
+  geom_sf(data = veg_db_plot_c_sf,size=1,aes(color=as.factor(sekhabtype)))+theme_bw()
+
+
+
 
 
 
