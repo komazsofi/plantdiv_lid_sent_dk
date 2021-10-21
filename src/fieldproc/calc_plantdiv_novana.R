@@ -7,9 +7,8 @@ library(broom)
 # Get species richness of star species
 
 ForRichness <- fread(file="O:/Nat_Ecoinformatics-tmp/au700510/fielddata_process/Novana/alledata-abiotiske.csv", na.strings = "mv") %>% as.data.frame()  %>%
-  dplyr::select(site, plot, antalstjernearter, year, UTMx,UTMy,sekhabtype,terhabtype) %>% 
-  rename(StarRichness = antalstjernearter)  %>% 
-  dplyr::filter(!is.na(StarRichness))
+  dplyr::select(site, plot, antalarter, antalstjernearter, antaltostjernearter, year, UTMx,UTMy,sekhabtype,terhabtype) %>% 
+  dplyr::filter(!is.na(antalstjernearter))
 
 # Filter minimum sampled 4 years and 2006|2007|2014|2015
 
@@ -44,7 +43,7 @@ Analysis_Name <- ForRichness_filt2 %>%
   unique()
 
 Analysis <-ForRichness_filt2 %>% 
-  purrr::map(~lm(StarRichness ~ year, data = .x)) %>% 
+  purrr::map(~lm(antalstjernearter ~ year, data = .x)) %>% 
   purrr::map(broom::tidy) %>% 
   purrr::map(~dplyr::filter(.x, term == "year")) %>% 
   purrr::map2(Analysis_Name, ~mutate(.x, plot = .y)) %>% 
@@ -100,10 +99,10 @@ st_crs(veg_db_plot_c_sf) <- 25832
 
 # Visualization
 
-ggplot(veg_db_c[(veg_db_c$trend=="Upwards" | veg_db_c$trend=="Downwards"),], aes(x = year, y = StarRichness)) + geom_path(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + geom_point(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + 
+ggplot(veg_db_c[(veg_db_c$trend=="Upwards" | veg_db_c$trend=="Downwards"),], aes(x = year, y = antalstjernearter)) + geom_path(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + geom_point(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + 
   theme_bw() + theme(legend.position = "none") + facet_wrap(~trend)
 
-ggplot(veg_db_c[(veg_db_c$trend=="Upwards"),], aes(x = year, y = StarRichness)) + geom_path(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + geom_point(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + 
+ggplot(veg_db_c[(veg_db_c$trend=="Upwards"),], aes(x = year, y = antalstjernearter)) + geom_path(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + geom_point(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + 
   theme_bw() + facet_wrap(~terhabtype)+ theme(legend.position = "none")
 
 # Make map
@@ -111,7 +110,7 @@ ggplot(veg_db_c[(veg_db_c$trend=="Upwards"),], aes(x = year, y = StarRichness)) 
 Denmark <- readRDS("O:/Nat_Ecoinformatics-tmp/au700510/fielddata_process/DK_Shape.rds")
 
 ggplot()+geom_sf(data = Denmark)+
-  geom_sf(data = veg_db_plot_c_sf[veg_db_plot_c_sf$trend=="Upwards",], color = "green4",size=2)+theme_bw()
+  geom_sf(data = veg_db_plot_c_sf[veg_db_plot_c_sf$trend=="Upwards",], color = "green4",size=3)+theme_bw()
 
 ggplot()+geom_sf(data = Denmark)+
   geom_sf(data = veg_db_plot_c_sf[veg_db_plot_c_sf$trend=="Downwards",], color = "slateblue4",size=2)+theme_bw()
@@ -120,7 +119,18 @@ ggplot()+geom_sf(data = Denmark)+
   geom_sf(data = veg_db_plot_c_sf,size=1,aes(color=terhabtype))+theme_bw()
 
 ggplot()+geom_sf(data = Denmark)+
-  geom_sf(data = veg_db_plot_c_sf,size=1,aes(color=as.factor(sekhabtype)))+theme_bw()
+  geom_sf(data = veg_db_plot_c_sf,aes(color=as.factor(sekhabtype)),size=2)+theme_bw()+theme(legend.position = "none")
+
+# Extract richness for particular location
+
+ggplot(veg_db_c[veg_db_c$plot==494273,], aes(x = year, y = antalarter)) + geom_path(aes(group= as.factor(plot), color = as.factor(plot)),size=2) + geom_point(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + 
+  theme_bw(base_size = 17)+theme(legend.position = "none")+xlab("Year")+ylab("Antalarter")+ggtitle("Plot=494273")
+
+ggplot(veg_db_c[veg_db_c$plot==494273,], aes(x = year, y = antalstjernearter)) + geom_path(aes(group= as.factor(plot), color = as.factor(plot)),size=2) + geom_point(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + 
+  theme_bw(base_size = 17)+theme(legend.position = "none")+xlab("Year")+ylab("Antalstjernearter")+ggtitle("Plot=494273")
+
+ggplot(veg_db_c[veg_db_c$plot==494273,], aes(x = year, y = antaltostjernearter)) + geom_path(aes(group= as.factor(plot), color = as.factor(plot)),size=2) + geom_point(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + 
+  theme_bw(base_size = 17)+theme(legend.position = "none")+xlab("Year")+ylab("Antaltostjernearter")+ggtitle("Plot=494273")
 
 
 
