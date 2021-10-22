@@ -124,12 +124,7 @@ lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf","l
     newline <- cbind(BlockID,FileName,wkt_astext,NumPoints,MinGpstime,MaxGpstime,Year,Month,Day,zmin,zmax,maxRetNum,maxNumofRet,minClass,maxClass,
                      minScanAngle,maxScanAngle,FirstRet,InterRet,LastRet,SingleRet,allPointDens,lastonlyPointDens,minFileID,maxFileID,epgs,wkt)
     
-  } else {
-    
-    newline <- cbind(BlockID,FileName,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,
-                     NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA)
-    
-  }
+  } 
   
   newline
   
