@@ -12,13 +12,14 @@ library(doSNOW)
 library(tcltk)
 library(lidR)
 library(dplyr)
+library(cowplot)
 
 # Set working directories
-inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/test_diff_lasfiles/test2014_1/" #set this to the path where the laz (unzipped) files are located 
+inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/test_diff_lasfiles/test2014_2/" #set this to the path where the laz (unzipped) files are located 
 outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/test_diff_lasfiles/" #set this to the path where the resulted files wished to be extracted
 lasinfoloc="C:/_Koma/LAStools/LAStools/bin/" #set this to the path where the lasinfo.exe file is located 
 lastype="laz" #set this either laz or las depending on how the lidar data is stored
-dirname="test2014_1" #set this based on the input directory name to name the file based on the directory origin
+dirname="test2014_2" #set this based on the input directory name to name the file based on the directory origin
 
 start_time <- Sys.time()
 
@@ -162,7 +163,60 @@ st_write(df, paste(outputdirectory,dirname,"_",st,".shp",sep=""))
 filecheck=setdiff(filelist_df,processed)
 write.csv(filecheck,paste(outputdirectory,dirname,"_problematic_files_",st,".csv",sep=""))
 
-# visualization
+# visualization #reused from Jakob repository https://github.com/jakobjassmann/ecodes-dk-lidar/blob/8a3b659d6ae45a5a4ce4250aaf812b13383db877/documentation/generate_date_stamp_figure.R
+
+df = st_read("O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/GST_2014_20211015_0148w_crs.shp")
+names(df)[4] <- "MinGpstime"
+names(df)[5] <- "MaxGpstime"
+names(df)[21] <- "allPointDens"
+
+df$year_month <- paste(substring(df$MaxGpstime,1,4)," ",substring(df$MaxGpstime,6,7),sep="")
+df$year_month [df$year_month  == "2011 09"] <- NA
+df$year_month <- as.factor(df$year_month)
+
+recent_plot <-ggplot() +
+  geom_sf(data = df,
+          aes(fill = year_month),
+          colour = NA) +
+  labs(fill = "Year, Month", title = "Tile acquisition dates", 
+       subtitle = "Most recent GPS timestamp per tile") +
+  scale_fill_manual(values = c("#C86DD7",
+                               rep("#00AD9A",3),
+                               rep("#50A315",3),
+                               rep("#009ADE",3),
+                               rep("#B88A00",3),
+                               "#E16A86")) +
+  theme_cowplot()
+save_plot(paste(outputdirectory,dirname,"_recent_gpstime",".png",sep=""), recent_plot,
+          base_height = 6)
+
+df$year_month2 <- paste(substring(df$MinGpstime,1,4)," ",substring(df$MinGpstime,6,7),sep="")
+df$year_month2 [df$year_month2  == "2011 09"] <- NA
+df$year_month2 <- as.factor(df$year_month)
+
+oldest_plot <-ggplot() +
+  geom_sf(data = df,
+          aes(fill = year_month2),
+          colour = NA) +
+  labs(fill = "Year, Month", title = "Tile acquisition dates", 
+       subtitle = "Oldest GPS timestamp per tile") +
+  scale_fill_manual(values = c("#C86DD7",
+                               rep("#00AD9A",3),
+                               rep("#50A315",3),
+                               rep("#009ADE",3),
+                               rep("#B88A00",3),
+                               "#E16A86")) +
+  theme_cowplot()
+save_plot(paste(outputdirectory,dirname,"_oldest_gpstime",".png",sep=""), recent_plot,
+          base_height = 6)
+
+pdens_plot <-ggplot() +
+  geom_sf(data = df, aes(fill = allPointDens),colour = NA)+
+  scale_fill_gradient2(low = "blue", mid = "yellow", high = "red",limits=c(0, 30))+
+  labs(fill = "Point density (all)", title = "Point density per tiles")+theme_cowplot()
+
+save_plot(paste(outputdirectory,dirname,"_pdens",".png",sep=""), recent_plot,
+          base_height = 6)
 
 end_time <- Sys.time()
 print(end_time - start_time)
