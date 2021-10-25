@@ -11,13 +11,14 @@ library(foreach)
 library(doSNOW)
 library(tcltk)
 library(lidR)
+library(dplyr)
 
 # Set working directories
-inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/test_diff_lasfiles/test2018_1/" #set this to the path where the laz (unzipped) files are located 
+inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/test_diff_lasfiles/test2014_1/" #set this to the path where the laz (unzipped) files are located 
 outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/test_diff_lasfiles/" #set this to the path where the resulted files wished to be extracted
 lasinfoloc="C:/_Koma/LAStools/LAStools/bin/" #set this to the path where the lasinfo.exe file is located 
 lastype="laz" #set this either laz or las depending on how the lidar data is stored
-dirname="test2018_1" #set this based on the input directory name to name the file based on the directory origin
+dirname="test2014_1" #set this based on the input directory name to name the file based on the directory origin
 
 start_time <- Sys.time()
 
@@ -29,7 +30,7 @@ filelist=list.files(path=inputdirectory, pattern=paste("\\.",lastype,"$",sep="")
 
 lasinfo <- data.frame(matrix(ncol = 27, nrow = 0))
 x <- c("BlockID","FileName", "wkt_astext","NumPoints","MinGpstime", "MaxGpstime","Year","Month","Day","zmin","zmax","maxRetNum","maxNumofRet","minClass","maxClass",
-       "minScanAngle","maxScanAngle","FirstRet","InterRet","LastRet","SingleRet","allPointDens","lastonlyPointDens","minFileID","maxFileID","epgs","wkt")
+       "minScanAngle","maxScanAngle","FirstRet","InterRet","LastRet","SingleRet","allPointDens","lastonlyPointDens","minFileID","maxFileID","epgs","crs")
 colnames(lasinfo) <- x
 
 ## set up parameters for the parallel process
@@ -44,7 +45,7 @@ pb <- tkProgressBar(max=ntasks)
 progress <- function(n) setTkProgressBar(pb, n)
 opts <- list(progress=progress)
 
-lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf","lidR"), .options.snow=opts, .errorhandling = "remove") %dopar% {
+lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf","lidR","dplyr"), .options.snow=opts, .errorhandling = "remove") %dopar% {
   
   print(filelist[i])
   
@@ -119,10 +120,12 @@ lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf","l
   epgs=epsg(lidrmeta)
   wkt=wkt(lidrmeta)
   
+  crs=case_when(epgs==0 & wkt=="" ~ "No georef info",epgs>0 ~ "It has epgs info",wkt!="" ~ "It has wkt info")
+  
   if (NumPoints>0) {
     
     newline <- cbind(BlockID,FileName,wkt_astext,NumPoints,MinGpstime,MaxGpstime,Year,Month,Day,zmin,zmax,maxRetNum,maxNumofRet,minClass,maxClass,
-                     minScanAngle,maxScanAngle,FirstRet,InterRet,LastRet,SingleRet,allPointDens,lastonlyPointDens,minFileID,maxFileID,epgs,wkt)
+                     minScanAngle,maxScanAngle,FirstRet,InterRet,LastRet,SingleRet,allPointDens,lastonlyPointDens,minFileID,maxFileID,epgs,crs)
     
   } 
   
@@ -136,15 +139,30 @@ stopCluster(cl)
 
 st=format(Sys.time(), "%Y%m%d_%H%M")
 
+filelist_df=as.data.frame(filelist)
+names(filelist_df) <- "FileName"
+
 lasinfo_df=as.data.frame(lasinfo)
 lasinfo_df[, c(4,10:13,16:25)] <- sapply(lasinfo_df[, c(4,10:13,16:25)], as.numeric)
 colnames(lasinfo_df) <- x
-write.csv(lasinfo_df,paste(outputdirectory,dirname,"_",st,".csv",sep=""))
+
+processed=as.data.frame(lasinfo_df$FileName)
+names(processed) <- "FileName"
+
+filechecked=merge(x = filelist_df, y = lasinfo_df, by = "FileName",all.x=TRUE,all.y=FALSE)
+write.csv(filechecked,paste(outputdirectory,dirname,"_",st,".csv",sep=""))
 
 lasinfo_df_c=lasinfo_df[!is.na(lasinfo_df$wkt_astext),]
 df = st_as_sf(lasinfo_df_c, wkt = "wkt_astext")
 st_crs(df) <- 25832
 st_write(df, paste(outputdirectory,dirname,"_",st,".shp",sep=""))
+
+# give info about potentially corrupt files
+
+filecheck=setdiff(filelist_df,processed)
+write.csv(filecheck,paste(outputdirectory,dirname,"_problematic_files_",st,".csv",sep=""))
+
+# visualization
 
 end_time <- Sys.time()
 print(end_time - start_time)
