@@ -132,6 +132,17 @@ ggplot(veg_db_c[veg_db_c$plot==494273,], aes(x = year, y = antalstjernearter)) +
 ggplot(veg_db_c[veg_db_c$plot==494273,], aes(x = year, y = antaltostjernearter)) + geom_path(aes(group= as.factor(plot), color = as.factor(plot)),size=2) + geom_point(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + 
   theme_bw(base_size = 17)+theme(legend.position = "none")+xlab("Year")+ylab("Antaltostjernearter")+ggtitle("Plot=494273")
 
+#
+
+ggplot(veg_db_c[veg_db_c$plot==495710,], aes(x = year, y = antalarter)) + geom_path(aes(group= as.factor(plot), color = as.factor(plot)),size=2) + geom_point(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + 
+  theme_bw(base_size = 17)+theme(legend.position = "none")+xlab("Year")+ylab("Antalarter")+ggtitle("Plot=495710")+xlim(c(2005,2013))
+
+ggplot(veg_db_c[veg_db_c$plot==495710,], aes(x = year, y = antalstjernearter)) + geom_path(aes(group= as.factor(plot), color = as.factor(plot)),size=2) + geom_point(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + 
+  theme_bw(base_size = 17)+theme(legend.position = "none")+xlab("Year")+ylab("Antalstjernearter")+ggtitle("Plot=495710")+xlim(c(2005,2013))
+
+ggplot(veg_db_c[veg_db_c$plot==495710,], aes(x = year, y = antaltostjernearter)) + geom_path(aes(group= as.factor(plot), color = as.factor(plot)),size=2) + geom_point(aes(group= as.factor(plot), color = as.factor(plot)),size=1) + 
+  theme_bw(base_size = 17)+theme(legend.position = "none")+xlab("Year")+ylab("Antaltostjernearter")+ggtitle("Plot=495710")+xlim(c(2005,2013))
+
 
 
 
