@@ -1,4 +1,4 @@
-# The script aims to derive basic information regarding the las/laz files with lasinfo from LAStools. 
+# The script aims to derive basic information regarding the las/laz files using lasinfo from LAStools and liDR R package. 
 #
 # To use the script the inputdirectory, outputdirectory, lasinfoloc, lastype and dirname needs to be rightly set (see # Set working directories section). 
 #
@@ -28,9 +28,9 @@ setwd(lasinfoloc)
 
 filelist=list.files(path=inputdirectory, pattern=paste("\\.",lastype,"$",sep=""), full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
 
-lasinfo <- data.frame(matrix(ncol = 27, nrow = 0))
+lasinfo <- data.frame(matrix(ncol = 30, nrow = 0))
 x <- c("BlockID","FileName", "wkt_astext","NumPoints","MinGpstime", "MaxGpstime","Year","Month","Day","zmin","zmax","maxRetNum","maxNumofRet","minClass","maxClass",
-       "minScanAngle","maxScanAngle","FirstRet","InterRet","LastRet","SingleRet","allPointDens","lastonlyPointDens","minFileID","maxFileID","epgs","crs")
+       "minScanAngle","maxScanAngle","FirstRet","InterRet","LastRet","SingleRet","allPointDens","lastonlyPointDens","minFileID","maxFileID","epgs","crs","LasVer","GenSoft","CreateYear")
 colnames(lasinfo) <- x
 
 ## set up parameters for the parallel process
@@ -122,10 +122,16 @@ lasinfo <- foreach(i=1:length(filelist), .combine = rbind, .packages = c("sf","l
   
   crs=case_when(epgs==0 & wkt=="" ~ "No georef info",epgs>0 ~ "It has epgs info",wkt!="" ~ "It has wkt info")
   
+  LasVer=paste(lidrmeta@PHB$`Version Major`,".",lidrmeta@PHB$`Version Minor`,sep="")
+  
+  GenSoft=lidrmeta@PHB$`Generating Software`
+  
+  CreateYear=lidrmeta@PHB$`File Creation Year`
+  
   if (NumPoints>0) {
     
     newline <- cbind(BlockID,FileName,wkt_astext,NumPoints,MinGpstime,MaxGpstime,Year,Month,Day,zmin,zmax,maxRetNum,maxNumofRet,minClass,maxClass,
-                     minScanAngle,maxScanAngle,FirstRet,InterRet,LastRet,SingleRet,allPointDens,lastonlyPointDens,minFileID,maxFileID,epgs,crs)
+                     minScanAngle,maxScanAngle,FirstRet,InterRet,LastRet,SingleRet,allPointDens,lastonlyPointDens,minFileID,maxFileID,epgs,crs,LasVer,GenSoft,CreateYear)
     
   } 
   
