@@ -1,7 +1,19 @@
-# Set working directory
-inputdirectory="O:/Nat_Ecoinformatics/B_Read/Denmark/Elevation/LiDAR/2019/laz/ZIPdownload/"
-outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/unzipped_dir2019/"
-setwd(outputdirectory)
+library(snow)
 
-ziplist=list.files(path=inputdirectory,pattern = "*.zip",full.names = TRUE)
-sapply(ziplist, unzip)
+# Set working directory
+inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/test3_unzip/"
+outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/test3_unzip"
+
+ziplist=list.files(path=inputdirectory, pattern=paste("\\.","ZIP","$",sep=""), full.name=TRUE, include.dirs=TRUE, recursive=TRUE)
+
+Nclust <- parallel::detectCores()-2
+cl <-makeCluster(Nclust)
+
+sink(paste(outputdirectory,"/zipping_log.txt",sep=""))
+
+parSapply(cl,ziplist, unzip, exdir=outputdirectory, simplify = FALSE)
+
+sink()
+
+stopCluster(cl)
+
