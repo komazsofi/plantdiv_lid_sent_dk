@@ -5,6 +5,8 @@
 
 library(ggplot2)
 library(cowplot)
+library(sf)
+library(tidyverse)
 
 # Set parameters
 outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/test_diff_lasfiles/"
@@ -70,3 +72,16 @@ save_plot(paste(outputdirectory,dirname,"_recentmonths_gpstime",".png",sep=""), 
           base_height = 6)
 
 # Histograms
+
+df_sumyearec=df %>% group_by(year_rec) %>% summarise(n = n())
+
+histo_recent <- ggplot(data=df_sumyearec,aes(x=year_rec,y=n,fill=as.factor(year_rec)))+geom_col()+
+  labs(fill = "Year", title = "Most recent tile acquisition years") +
+  geom_text(data=df_sumyearec,aes(x=year_rec,y=n+1000,label=n),inherit.aes = F)+
+  scale_y_continuous(limits = c(0,30000)) +
+  xlab("Year") + ylab("Number of tiles") +
+  theme_cowplot()
+
+histo_recent_plot <- plot_grid(recentyear_plot, histo_recent, labels = c('A', 'B'),ncol=2)
+save_plot(paste(outputdirectory,dirname,"_histo_recent_plot",".png",sep=""), histo_recent_plot,
+          base_height = 6)
