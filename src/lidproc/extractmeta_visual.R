@@ -9,8 +9,8 @@ library(sf)
 library(tidyverse)
 
 # Set parameters
-outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/test_diff_lasfiles/"
-file="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/GST_2014_20211015_0148w_crs.shp"
+outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/"
+file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/GST_2014_20211102_0549.shp"
 dirname="GST_2014"
 
 df = st_read(file)
@@ -28,7 +28,7 @@ recentyear_plot <-ggplot() +
   geom_sf(data = df,
           aes(fill = year_rec),
           colour = NA) +
-  labs(fill = "Year", title = "Tile acquisition years") +
+  labs(fill = "Year", title = "Most recent tile acquisition years") +
   theme_cowplot()
 
 save_plot(paste(outputdirectory,dirname,"_recent_gpstime",".png",sep=""), recentyear_plot,
@@ -42,8 +42,7 @@ oldestyear_plot <-ggplot() +
   geom_sf(data = df,
           aes(fill = year_old),
           colour = NA) +
-  labs(fill = "Year, Month", title = "Tile acquisition dates") +
-  labs(fill = "Year", title = "Tile acquisition years") +
+  labs(fill = "Year", title = "Oldest tile acquisition dates") +
   theme_cowplot()
 
 save_plot(paste(outputdirectory,dirname,"_oldest_gpstime",".png",sep=""), oldestyear_plot,
@@ -84,4 +83,17 @@ histo_recent <- ggplot(data=df_sumyearec,aes(x=year_rec,y=n,fill=as.factor(year_
 
 histo_recent_plot <- plot_grid(recentyear_plot, histo_recent, labels = c('A', 'B'),ncol=2)
 save_plot(paste(outputdirectory,dirname,"_histo_recent_plot",".png",sep=""), histo_recent_plot,
+          base_height = 6)
+
+df_sumyearold=df %>% group_by(year_old) %>% summarise(n = n())
+
+histo_old <- ggplot(data=df_sumyearold,aes(x=year_old,y=n,fill=as.factor(year_old)))+geom_col()+
+  labs(fill = "Year", title = "Oldest tile acquisition years") +
+  geom_text(data=df_sumyearold,aes(x=year_old,y=n+1000,label=n),inherit.aes = F)+
+  scale_y_continuous(limits = c(0,30000)) +
+  xlab("Year") + ylab("Number of tiles") +
+  theme_cowplot()
+
+histo_old_plot <- plot_grid(oldestyear_plot, histo_old, labels = c('A', 'B'),ncol=2)
+save_plot(paste(outputdirectory,dirname,"_histo_oldest_plot",".png",sep=""), histo_old_plot,
           base_height = 6)
