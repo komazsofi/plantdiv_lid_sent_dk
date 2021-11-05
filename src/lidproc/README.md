@@ -1,8 +1,6 @@
 This work aimed to extract metadata information about the las/laz files coming from the danish country-wide ALS datasets from different downloads over the years. The developed scripts (https://github.com/komazsofi/plantdiv_lid_sent_dk/blob/master/src/lidproc/) extracts metadata information about flight acquisition dates, point density etc. (see below) as a shapefile. It only uses the las/laz file header to fetch the basic information about the las/laz files.  
 
-  
-
-The metadata extraction scripts are performed in the following order: 
+## The metadata extraction scripts are performed in the following order: 
 
 Step A: unzip.R : unzip zipped las/laz files (generally from webservices  laz/las files are accessible only in zipped formats) 
 
@@ -20,9 +18,7 @@ Step C: extractmeta_visual.R: based on the generated shapefiles visualize some o
 
 Output: maps and histograms as png files about oldest flight dates, recent flight dates, point density, most recent month of data acquisition 
 
-  
-
-Name of the attributes extracted within the shapefile using LAStools lasinfo.exe: 
+## Name of the attributes extracted within the shapefile using LAStools lasinfo.exe: 
 
 - BlockID: the identifier of the 1 km x 1 km block 
 
@@ -82,25 +78,21 @@ Name of the attributes extracted within the shapefile using LAStools lasinfo.exe
 
 -CreateYear: the year of generating the file with the last software used (not necessary the same as data acquisition date) 
 
-  
-
 Some further comments and limitations about the average point density estimations from LAStools: https://groups.google.com/g/lastools/c/I2OVvgOtW0E Keep it mind that point density estimated based on the number of returns / the total area implemented within the LAStools software.  
 
-  
+## With the script the following directories were examined: 
 
-With the script the following directories were examined: 
+- KMS2007*.shp was extracted based on O:\...\LegacyData\Denmark\Elevation\KMS2007\PointCloud (GPS time were not adjusted so real date cannot be extracted - scan lines are provided) 
 
-- KMS2007*.shp was extracted based on O:\Nat_Ecoinformatics\B_Read\LegacyData\Denmark\Elevation\KMS2007\PointCloud (GPS time were not adjusted so real date cannot be extracted - scan lines are provided) 
+- GST2014*.shp was extracted based on O:\...\LegacyData\Denmark\Elevation\GST_2014\Punktsky\laz  
 
-- GST2014*.shp was extracted based on O:\Nat_Ecoinformatics\B_Read\LegacyData\Denmark\Elevation\GST_2014\Punktsky\laz  
+- dir2015_2018*.shp was extracted based on O:\...\B_Read\Denmark\Elevation\LiDAR\2015_2018\laz 
 
-- dir2015_2018*.shp was extracted based on O:\Nat_Ecoinformatics\B_Read\Denmark\Elevation\LiDAR\2015_2018\laz 
+- dir2019*.shp was extracted based on O:\...\B_Read\Denmark\Elevation\LiDAR\2019\laz\ZIPdownload 
 
-- dir2019*.shp was extracted based on O:\Nat_Ecoinformatics\B_Read\Denmark\Elevation\LiDAR\2019\laz\ZIPdownload 
+-DHM2007*.shp was extracted based on O:\...\DHM2007 
 
--DHM2007*.shp was extracted based on O:\Nat_Ecoinformatics-tmp\au659486_LiDAR\DHM2007 
-
--DHM2015*.shp was extracted based on O:\Nat_Ecoinformatics-tmp\au659486_LiDAR\DHM2015 
+-DHM2015*.shp was extracted based on O:\...\DHM2015 
 
  
 
