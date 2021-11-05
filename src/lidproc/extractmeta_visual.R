@@ -10,8 +10,12 @@ library(tidyverse)
 
 # Set parameters
 outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/"
+
 file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/dir2015_2018_20211104_0935.shp"
 dirname="dir2015_2018"
+
+#file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/GST_2014_20211102_0549.shp"
+#dirname="GST_2014"
 
 df = st_read(file)
 names(df)[4] <- "MinGpstime"
@@ -29,6 +33,8 @@ recentyear_plot <-ggplot() +
           aes(fill = year_rec),
           colour = NA) +
   labs(fill = "Year", title = "Most recent tile acquisition years") +
+  scale_fill_manual(values = c("2007" = "darkviolet", "2013" = "brown","2014" = "gold",
+                               "2015" = "darkolivegreen4","2018" = "chocolate4","2019" = "hotpink","NA"="darkgray"))+
   theme_cowplot()
 
 save_plot(paste(outputdirectory,dirname,"_recent_gpstime",".png",sep=""), recentyear_plot,
@@ -43,6 +49,8 @@ oldestyear_plot <-ggplot() +
           aes(fill = year_old),
           colour = NA) +
   labs(fill = "Year", title = "Oldest tile acquisition years") +
+  scale_fill_manual(values = c("2007" = "darkviolet", "2013" = "brown","2014" = "gold",
+                               "2015" = "darkolivegreen4","2018" = "chocolate4","2019" = "hotpink","NA"="darkgray"))+
   theme_cowplot()
 
 save_plot(paste(outputdirectory,dirname,"_oldest_gpstime",".png",sep=""), oldestyear_plot,
@@ -79,6 +87,8 @@ histo_recent <- ggplot(data=df_sumyearec,aes(x=year_rec,y=n,fill=as.factor(year_
   geom_text(data=df_sumyearec,aes(x=year_rec,y=n+1000,label=n),inherit.aes = F)+
   scale_y_continuous(limits = c(0,30000)) +
   xlab("Year") + ylab("Number of tiles") +
+  scale_fill_manual(values = c("2007" = "darkviolet", "2013" = "brown","2014" = "gold",
+                               "2015" = "darkolivegreen4","2018" = "chocolate4","2019" = "hotpink","NA"="darkgray"))+
   theme_cowplot()
 
 save_plot(paste(outputdirectory,dirname,"_histo_recent_plot",".png",sep=""), histo_recent,
@@ -91,6 +101,8 @@ histo_old <- ggplot(data=df_sumyearold,aes(x=year_old,y=n,fill=as.factor(year_ol
   geom_text(data=df_sumyearold,aes(x=year_old,y=n+1000,label=n),inherit.aes = F)+
   scale_y_continuous(limits = c(0,30000)) +
   xlab("Year") + ylab("Number of tiles") +
+  scale_fill_manual(values = c("2007" = "darkviolet", "2013" = "brown","2014" = "gold",
+                               "2015" = "darkolivegreen4","2018" = "chocolate4","2019" = "hotpink","NA"="darkgray"))+
   theme_cowplot()
 
 save_plot(paste(outputdirectory,dirname,"_histo_oldest_plot",".png",sep=""), histo_old,
