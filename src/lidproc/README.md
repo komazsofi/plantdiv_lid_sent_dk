@@ -1,4 +1,4 @@
-This work aimed to extract metadata information about the las/laz files coming from the danish country-wide ALS datasets from different downloads over the years. The developed scripts (https://github.com/komazsofi/plantdiv_lid_sent_dk/blob/master/src/lidproc/) extracts metadata information about flight acquisition dates, point density etc. (see below) as a shapefile. It only uses the las/laz file header to fetch the basic information about the las/laz files.  
+This work aimed to extract metadata information about the las/laz files coming from the danish country-wide ALS datasets from different downloads over the years. The developed scripts extracts metadata information about flight acquisition dates, point density etc. (see below) as a shapefile. It only uses the las/laz file header to fetch the basic information about the las/laz files.  
 
 ## The metadata extraction scripts are performed in the following order: 
 
