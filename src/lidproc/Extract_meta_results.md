@@ -13,9 +13,9 @@ This report aim to quality check the different danish country-wide ALS datasets 
 
 ## KMS2007
 
-The metadata extraction was succesful, no corrupted files occured in the dataset. The problem with the directory is that the downloaded files did not cover the whole of the Denmark big blocks are missing. Furthermore one tile (6123_485) has an outlier. The header file of the las file which saved on las v.1.0 contains limited information: no adjusted GPStime, no georeferencing information possible to retrieve. However linking the tiles to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The data acquisition times possible to retrieve from the trajectory data (TODO). The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08.
+The metadata extraction was succesful, no corrupt files occured in the dataset. The issue with the directory is that the downloaded files did not cover the whole of the Denmark (big blocks are missing). Furthermore one tile (6123_485) has an outlier. The header file of the las files contain limited information: no adjusted GPStime, no georeferencing information possible to retrieve. However linking the tiles to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The data acquisition times are possible to retrieve from the trajectory data (TODO). The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08.
 
-Based on visual exploration of random tiles the data was measured with a first-last return LiDAR data and the point density is between 0.5 points/m2. 
+Based on visual exploration of random tiles the data is a first-last return LiDAR data and the point density is around 0.5 points/$m^2$. 
 
 Point density map           |  Point density histogram
 :-------------------------:|:-------------------------:
@@ -23,9 +23,9 @@ Point density map           |  Point density histogram
 
 ## DHM2007
 
-The metadata extraction was succesful, no corrupted files occured in the dataset. The directory contains all the tiles across Denmark. One tile (6123_485) has an outlier. The header file of the las file which saved on las v.1.0 contains limited information: no adjusted GPStime, no georeferencing information possible to retrieve. However linking the tiles to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The data acquisition times possible to retrieve from the trajectory data (TODO). The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08.The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08.The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08.The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08.
+The metadata extraction was succesful, no corrupt files occured in the dataset. The directory contains all the tiles across Denmark. One tile (6123_485) has an outlier. The header file of the las files contain limited information: no adjusted GPStime, no georeferencing information possible to retrieve. However linking the tiles to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The data acquisition times possible to retrieve from the trajectory data (TODO). The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08. 
 
-Based on visual exploration of random tiles the data was measured with a first-last return LiDAR data and the point density is between 0.5 points/m2.
+Based on visual exploration of random tiles the data is a first-last return LiDAR data and the point density is around 0.5 points/$m^2$. 
 
 Point density map           |  Point density histogram
 :-------------------------:|:-------------------------:
@@ -39,14 +39,14 @@ The metadata extraction found 99 incorrect files with incorrect header informati
 ERROR: cannot open lasreaderlas with file name 'xxx\PUNKTSKY_1km_6116_483.laz'
 Error: LASlib internal error. See message above."
 
-The geographic information is stored as epgs code within the laz files (which is expected since las v.1.3 is used) however 6 tiles do not contain geographic information, but linking them to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The datasets were largely extracted with PDAL 1.3.0. Main issue is that during the extraction of the minimum GPS time (converted into day-month-year) still contains datasets from 2006/2007 ALS campaign (the minimum GPS time identifies 11720 tile). (TODO: needs to be checked what are this points e.g. only water point and ground points or also vegetation points , whether this are not re-mesured tiles etc.)
+The geographic information is stored as epgs code within the laz files (which is expected since las v.1.3 is used) however 6 tiles do not contain geographic information, but linking them to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The datasets were largely extracted with PDAL 1.3.0. Main issue with the dataset is that the minimum GPS time (converted into day-month-year) shows that it contains LiDAR data from the (previous) 2006/2007 ALS campaign (in the case of 11720 tiles). (TODO: needs to be checked how this points located within the 1 km x 1 km area e.g. only water point and ground points or also vegetation points, whether these tiles are not re-measured tiles etc.)
 
 Oldest            |  Most recent
 :-------------------------:|:-------------------------:
 ![](figures/GST_2014_oldest_gpstime.png)  |  ![](figures/GST_2014_recent_gpstime.png)
 ![](figures/GST_2014_histo_oldest_plot.png)  |  ![](figures/GST_2014_histo_recent_plot.png)
 
-The dataset is a discrete return LiDAR data where 5 returns were recorded. The estimated mean point density calculated for all returns is 8 pt/m2. 
+The dataset is a discrete-return LiDAR data with 4-5 recorded returns. The estimated mean point density calculated for all returns is 8 pt/$m^2$. 
 
 Point density map           |  Point density histogram
 :-------------------------:|:-------------------------:
@@ -56,16 +56,16 @@ Point density map           |  Point density histogram
 
 ## 2015_2018
 
-The metadata extraction found 8 incorrect files however no error message were retrieved regarding these files. 
+The metadata extraction found 8 incorrect files however no error message were retrieved regarding these files (TODO: needs to be checked manually). 
 
-The geographic information is mainly stored as epgs code within the laz files however 276 tiles do not contain geographic information, but linking them to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correc geographic location. The datasets were largely extracted with PDAL 1.3.0 and 1.5.0. Some files were extracted using TerraScan and one with CPS/RTW LAS Lib v1.08. The dataset contains LiDAR data from all three flight campaign. The storage technique was to update the 2014/2015 dataset in locations where new LiDAR data is available (until 2018 when the data was downloaded). So in the end one region is measured in 2018 and this is pusblished together with 2014/2015 dataset. Based on the minimum GPS time also 9348 tiles is still contains data from 2006/2007 and also the 2018 measured region some tiles measured in 2015 (13104 tiles). 
+The geographic information is mainly stored as epgs code within the laz files however 276 tiles do not contain geographic information, but linking them to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The datasets were largely extracted with PDAL 1.3.0 and 1.5.0. Some files were extracted using TerraScan and one with CPS/RTW LAS Lib v1.08. The dataset contains LiDAR data from all three flight campaigns. The online data storage were updated the 2014/2015 datasets continiously with the newly measured LiDAR datasets. So as result one region was measured in 2018 and this was pusblished together with mainly the 2014/2015 dataset. Based on the minimum GPS time also 9348 tiles contain data from 2006/2007 as well as the 2018 measured region constains some tiles which were measured in 2015 (13104 tiles). 
 
 Oldest            |  Most recent
 :-------------------------:|:-------------------------:
 ![](figures/dir2015_2018_oldest_gpstime.png)  |  ![](figures/dir2015_2018_recent_gpstime.png)
 ![](figures/dir2015_2018_histo_oldest_plot.png)  |  ![](figures/dir2015_2018_histo_recent_plot.png)
 
-The most recently measured LiDAR dataset is fullwaveform ALS data. The estimated mean point density calculated for all returns is 10 pt/m2.
+The most recently measured LiDAR dataset is a fullwaveform ALS data. The estimated mean point density calculated for all returns is 10 pt/$m^2$.
 
 Point density map           |  Point density histogram
 :-------------------------:|:-------------------------:
