@@ -50,6 +50,7 @@ Oldest            |  Most recent
 
 The most recently measured LiDAR dataset is fullwaveform ALS data. The estimated mean point density calculated for all returns is 10 pt/m2.
 
+:-------------------------:|:-------------------------:
 ![](figures/dir2015_2018_pdens.png)  |  ![](figures/dir2015_2018_histo_pdens_plot.png)
 
 ## 2019
