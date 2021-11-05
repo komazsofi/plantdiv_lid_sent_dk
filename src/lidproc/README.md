@@ -2,21 +2,21 @@ This work aimed to extract metadata information about the las/laz files coming f
 
 ## The metadata extraction scripts are performed in the following order: 
 
-Step A: unzip.R : unzip zipped las/laz files (generally from webservices  laz/las files are accessible only in zipped formats) 
+* Step A: unzip.R : unzip zipped las/laz files (generally from webservices  laz/las files are accessible only in zipped formats) 
 
-Input: zipped las/laz files in the working directory  
+	* Input: zipped las/laz files in the working directory  
 
-Output: unzipped las/laz files in the output directory 
+	* Output: unzipped las/laz files in the output directory 
 
-Step B: extractmeta_v2.R: using the unzipped las/laz files in directories extracts a shapefile and csv files about the metadata of the las/laz files, also catch information about errors  
+* Step B: extractmeta_v2.R: using the unzipped las/laz files in directories extracts a shapefile and csv files about the metadata of the las/laz files, also catch information about errors  
 
-Input: unzipped las/laz files in the working directory  
+	* Input: unzipped las/laz files in the working directory  
 
-Output: a shapefile and a csv about the las/laz files in directory named as: directory name, date of file extraction, time of file extraction (year,month,day_hour and minutes), a log txt file named as dirname which contains information about printed screen information during the process, a csv file with listing the potentially problematic files which were not processed during the loop due to errors names as *problematic_files*.csv 
+	* Output: a shapefile and a csv about the las/laz files in directory named as: directory name, date of file extraction, time of file extraction (year,month,day_hour and minutes), a log txt file named as dirname which contains information about printed screen information during the process, a csv file with listing the potentially problematic files which were not processed during the loop due to errors names as *problematic_files*.csv 
 
-Step C: extractmeta_visual.R: based on the generated shapefiles visualize some of the most important aspects of the data Input: extracted shapefile from extractmeta_v2.r script for fast overbiew purposes 
+* Step C: extractmeta_visual.R: based on the generated shapefiles visualize some of the most important aspects of the data Input: extracted shapefile from extractmeta_v2.r script for fast overbiew purposes 
 
-Output: maps and histograms as png files about oldest flight dates, recent flight dates, point density, most recent month of data acquisition 
+	* Output: maps and histograms as png files about oldest flight dates, recent flight dates, point density, most recent month of data acquisition 
 
 ## Name of the attributes extracted within the shapefile using LAStools lasinfo.exe: 
 
@@ -72,11 +72,11 @@ Output: maps and histograms as png files about oldest flight dates, recent fligh
 
 - crs: gives information whether geographic information is exist within the las/laz file. It can be "No georef info" it has neither epgs or wkt information, "It has epgs info" it has epgs information (expected in the case of las v. 1.3.), "It has wkt info" it has wkt information (expected in the case of las v 1.4) 
 
--LasVer: version of the las/laz file 
+- LasVer: version of the las/laz file 
 
--GenSoft: the last software which touched the file 
+- GenSoft: the last software which touched the file 
 
--CreateYear: the year of generating the file with the last software used (not necessary the same as data acquisition date) 
+- CreateYear: the year of generating the file with the last software used (not necessary the same as data acquisition date) 
 
 Some further comments and limitations about the average point density estimations from LAStools: https://groups.google.com/g/lastools/c/I2OVvgOtW0E Keep it mind that point density estimated based on the number of returns / the total area implemented within the LAStools software.  
 
@@ -90,9 +90,9 @@ Some further comments and limitations about the average point density estimation
 
 - dir2019*.shp was extracted based on O:\...\B_Read\Denmark\Elevation\LiDAR\2019\laz\ZIPdownload 
 
--DHM2007*.shp was extracted based on O:\...\DHM2007 
+- DHM2007*.shp was extracted based on O:\...\DHM2007 
 
--DHM2015*.shp was extracted based on O:\...\DHM2015 
+- DHM2015*.shp was extracted based on O:\...\DHM2015 
 
  
 
