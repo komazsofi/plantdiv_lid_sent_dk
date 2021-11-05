@@ -15,7 +15,7 @@ This report aim to quality check the different danish country-wide ALS datasets 
 
 The metadata extraction was succesful, no corrupted files occured in the dataset. The problem with the directory is that the downloaded files did not cover the whole of the Denmark big blocks are missing. Furthermore one tile (6123_485) has an outlier. The header file of the las file which saved on las v.1.0 contains limited information: no adjusted GPStime, no georeferencing information possible to retrieve. However linking the tiles to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The data acquisition times possible to retrieve from the trajectory data (TODO). The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08.
 
-Based on visual exploration of random tiles the data was measured with a first-last return LiDAR data and the point density is between 0-1 points/m2. 
+Based on visual exploration of random tiles the data was measured with a first-last return LiDAR data and the point density is between 0.5 points/m2. 
 
 Point density map           |  Point density histogram
 :-------------------------:|:-------------------------:
@@ -25,7 +25,7 @@ Point density map           |  Point density histogram
 
 The metadata extraction was succesful, no corrupted files occured in the dataset. The directory contains all the tiles across Denmark. One tile (6123_485) has an outlier. The header file of the las file which saved on las v.1.0 contains limited information: no adjusted GPStime, no georeferencing information possible to retrieve. However linking the tiles to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The data acquisition times possible to retrieve from the trajectory data (TODO). The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08.The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08.The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08.The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08.
 
-Based on visual exploration of random tiles the data was measured with a first-last return LiDAR data and the point density is between 0-1 points/m2.
+Based on visual exploration of random tiles the data was measured with a first-last return LiDAR data and the point density is between 0.5 points/m2.
 
 Point density map           |  Point density histogram
 :-------------------------:|:-------------------------:
