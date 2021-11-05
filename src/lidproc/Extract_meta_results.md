@@ -33,7 +33,16 @@ Error: LASlib internal error. See message above."
 
 The geographic information is stored as epgs code within the laz files (which is expected since las v.1.3 is used) however 6 tiles do not contain geographic information, but linking them to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The datasets were largely extracted with PDAL 1.3.0. Main issue is that during the extraction of the minimum GPS time (converted into day-month-year) still contains datasets from 2006/2007 ALS campaign (the minimum GPS time identifies 11720 tile). (TODO: needs to be checked what are this points e.g. only water point and ground points or also vegetation points , whether this are not re-mesured tiles etc.)
 
-The dataset is a discrete return LiDAR data where 5 returns were recorded. The point density is between 0-50 points/m2. 
+Oldest            |  Most recent
+:-------------------------:|:-------------------------:
+![](figures/GST_2014_oldest_gpstime.png)  |  ![](figures/GST_2014_recent_gpstime.png)
+![](figures/GST_2014_histo_oldest_plot.png)  |  ![](figures/GST_2014_histo_recent_plot.png)
+
+The dataset is a discrete return LiDAR data where 5 returns were recorded. The estimated mean point density calculated for all returns is 8 pt/m2. 
+
+Point density map           |  Point density histogram
+:-------------------------:|:-------------------------:
+![](figures/GST_2014_pdens.png)  |  ![](figures/GST_2014_histo_pdens_plot.png)
 
 ## DHM2015
 

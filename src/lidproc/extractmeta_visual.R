@@ -11,11 +11,11 @@ library(tidyverse)
 # Set parameters
 outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/"
 
-file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/dir2015_2018_20211104_0935.shp"
-dirname="dir2015_2018"
+#file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/dir2015_2018_20211104_0935.shp"
+#dirname="dir2015_2018"
 
-#file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/GST_2014_20211102_0549.shp"
-#dirname="GST_2014"
+file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/GST_2014_20211102_0549.shp"
+dirname="GST_2014"
 
 df = st_read(file)
 names(df)[4] <- "MinGpstime"
