@@ -14,7 +14,9 @@ This work aimed to extract metadata information about the las/laz files coming f
 
 	* Output: a shapefile and a csv about the las/laz files in directory named as: directory name, date of file extraction, time of file extraction (year,month,day_hour and minutes), a log txt file named as dirname which contains information about printed screen information during the process, a csv file with listing the potentially problematic files which were not processed during the loop due to errors names as *problematic_files*.csv 
 
-* Step C: extractmeta_visual.R: based on the generated shapefiles visualize some of the most important aspects of the data Input: extracted shapefile from extractmeta_v2.r script for fast overbiew purposes 
+* Step C: extractmeta_visual.R: based on the generated shapefiles visualize some of the most important aspects of the data 
+
+	* Input: extracted shapefile from extractmeta_v2.r script for fast overbiew purposes 
 
 	* Output: maps and histograms as png files about oldest flight dates, recent flight dates, point density, most recent month of data acquisition 
 
