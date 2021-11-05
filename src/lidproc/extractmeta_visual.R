@@ -42,7 +42,7 @@ oldestyear_plot <-ggplot() +
   geom_sf(data = df,
           aes(fill = year_old),
           colour = NA) +
-  labs(fill = "Year", title = "Oldest tile acquisition dates") +
+  labs(fill = "Year", title = "Oldest tile acquisition years") +
   theme_cowplot()
 
 save_plot(paste(outputdirectory,dirname,"_oldest_gpstime",".png",sep=""), oldestyear_plot,
@@ -50,7 +50,7 @@ save_plot(paste(outputdirectory,dirname,"_oldest_gpstime",".png",sep=""), oldest
 
 pdens_plot <-ggplot() +
   geom_sf(data = df, aes(fill = allPointDens),colour = NA)+
-  scale_fill_gradient2(low = "blue", mid = "yellow", high = "red",limits=c(0, 30))+
+  scale_fill_gradient2(low = "blue", mid = "yellow", high = "red",limits=c(0, 25))+
   labs(fill = "Point density (all)", title = "Point density per tiles")+theme_cowplot()
 
 save_plot(paste(outputdirectory,dirname,"_pdens",".png",sep=""), pdens_plot,
@@ -81,8 +81,7 @@ histo_recent <- ggplot(data=df_sumyearec,aes(x=year_rec,y=n,fill=as.factor(year_
   xlab("Year") + ylab("Number of tiles") +
   theme_cowplot()
 
-histo_recent_plot <- plot_grid(recentyear_plot, histo_recent, labels = c('A', 'B'),ncol=2)
-save_plot(paste(outputdirectory,dirname,"_histo_recent_plot",".png",sep=""), histo_recent_plot,
+save_plot(paste(outputdirectory,dirname,"_histo_recent_plot",".png",sep=""), histo_recent,
           base_height = 6)
 
 df_sumyearold=df %>% group_by(year_old) %>% summarise(n = n())
@@ -94,6 +93,16 @@ histo_old <- ggplot(data=df_sumyearold,aes(x=year_old,y=n,fill=as.factor(year_ol
   xlab("Year") + ylab("Number of tiles") +
   theme_cowplot()
 
-histo_old_plot <- plot_grid(oldestyear_plot, histo_old, labels = c('A', 'B'),ncol=2)
-save_plot(paste(outputdirectory,dirname,"_histo_oldest_plot",".png",sep=""), histo_old_plot,
+save_plot(paste(outputdirectory,dirname,"_histo_oldest_plot",".png",sep=""), histo_old,
+          base_height = 6)
+
+histo_pdens <- ggplot(data = df, aes(x = allPointDens)) + geom_histogram(binwidth=5)+
+  labs(title = "Point density histogram (all returns)",
+       x = "All point density",
+       y = "Number of tiles",
+       subtitle = paste0("Mean: ",round(mean(df$allPointDens),2), ", Median: ",round(median(df$allPointDens),2),
+                         ", Min: ",round(min(df$allPointDens),2),", Max: ",round(max(df$allPointDens),2)))+
+  theme_cowplot()
+
+save_plot(paste(outputdirectory,dirname,"_histo_pdens_plot",".png",sep=""), histo_pdens,
           base_height = 6)
