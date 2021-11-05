@@ -2,7 +2,8 @@
 
 This report aim to quality check the different danish country-wide ALS datasets on the AU server. The following directories were revised:
 
-| directory name | expected flight campaign | adjusted GPS time |  
+| directory name | expected flight campaign | adjusted GPS time |
+| --- |:---:| ---:|  
 | KMS2007 | 2006/2007 | not available (trajectory files) | 
 | DHM2007 | 2006/2007 | not available (trajectory files) | 
 | GST_2014 | 2014/2015 | available |
@@ -45,7 +46,6 @@ The geographic information is mainly stored as epgs code within the laz files ho
 Oldest            |  Most recent
 :-------------------------:|:-------------------------:
 ![](figures/dir2015_2018_oldest_gpstime.png)  |  ![](figures/dir2015_2018_recent_gpstime.png)
-:-------------------------:|:-------------------------:
 ![](figures/dir2015_2018_histo_oldest_plot.png)  |  ![](figures/dir2015_2018_histo_recent_plot.png)
 
 The most recently measured LiDAR dataset is fullwaveform ALS data. The point density is between 0-50 points/m2. 
