@@ -48,6 +48,8 @@ Oldest            |  Most recent
 ![](figures/dir2015_2018_oldest_gpstime.png)  |  ![](figures/dir2015_2018_recent_gpstime.png)
 ![](figures/dir2015_2018_histo_oldest_plot.png)  |  ![](figures/dir2015_2018_histo_recent_plot.png)
 
-The most recently measured LiDAR dataset is fullwaveform ALS data. The point density is between 0-50 points/m2. 
+The most recently measured LiDAR dataset is fullwaveform ALS data. The estimated mean point density calculated for all returns is 10 pt/m2.
+
+![](figures/dir2015_2018_pdens.png)  |  ![](figures/dir2015_2018_histo_pdens_plot.png)
 
 ## 2019
