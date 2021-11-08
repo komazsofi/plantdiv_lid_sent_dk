@@ -20,11 +20,11 @@ outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/"
 #file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/DHM2007_20211102_2342.shp"
 #dirname="DHM2007"
 
-#file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/KMS2007_20211101_1227.shp"
-#dirname="KMS2007"
+file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/KMS2007_20211101_1227.shp"
+dirname="KMS2007"
 
-file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/dir2019_20211108_0706.shp"
-dirname="dir2019"
+#file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/dir2019_20211108_0706.shp"
+#dirname="dir2019"
 
 df = st_read(file)
 names(df)[4] <- "MinGpstime"
