@@ -58,7 +58,7 @@ Point density map           |  Point density histogram
 
 The metadata extraction found 8 incorrect files however no error message were retrieved regarding these files (TODO: needs to be checked manually). 
 
-The geographic information is mainly stored as epgs code within the laz files however 276 tiles do not contain geographic information, but linking them to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The datasets were largely extracted with PDAL 1.3.0 and 1.5.0. Some files were extracted using TerraScan and one with CPS/RTW LAS Lib v1.08. The dataset contains LiDAR data from all three flight campaigns. The online data storage were updated the 2014/2015 datasets continiously with the newly measured LiDAR datasets. So as result one region was measured in 2018 and this was pusblished together with mainly the 2014/2015 dataset. Based on the minimum GPS time also 9348 tiles contain data from 2006/2007 as well as the 2018 measured region constains some tiles which were measured in 2015 (13104 tiles). 
+The geographic information is mainly stored as epgs code within the laz files however 276 tiles do not contain geographic information, but linking them to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The datasets were largely extracted with PDAL 1.3.0 and 1.5.0. Some files were extracted using TerraScan and one with CPS/RTW LAS Lib v1.08. The dataset contains LiDAR data from all three flight campaigns. The 2014/2015 LiDAR dataset were updated with the more recently measured dataset(s). Based on the minimum GPS time 9348 tiles contain data from 2006/2007 flight campaign as well as the 2018 measured region constains some tiles which were measured in 2015. 
 
 Oldest            |  Most recent
 :-------------------------:|:-------------------------:
@@ -72,3 +72,30 @@ Point density map           |  Point density histogram
 ![](figures/dir2015_2018_pdens.png)  |  ![](figures/dir2015_2018_histo_pdens_plot.png)
 
 ## 2019
+
+The metadata extraction found 92 incorrect files however no error message were retrieved regarding these files (TODO: needs to be checked manually). 
+
+The geographic information is mainly stored as wkt within the laz files however 11 tiles do not contain geographic information, but linking them to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The files were extracted using various software solutions: CPD/RTW LAS Lib v1.08, las2las (different versions), PDAL 1.3.0, 1.8.0 and TerraScan. Based on the minimum GPS time 7646 tiles contain data from 2006/2007 flight campaign as well as the regions measured in 2018, 2019 is still contains some files from the 2014/2015 flight campaign. 
+
+Oldest            |  Most recent
+:-------------------------:|:-------------------------:
+![](figures/dir2019_oldest_gpstime.png)  |  ![](figures/dir2019_recent_gpstime.png)
+![](figures/dir2019_histo_oldest_plot.png)  |  ![](figures/dir2019_histo_recent_plot.png)
+
+The most recently measured LiDAR dataset is a fullwaveform ALS data. The estimated mean point density calculated for all returns is 12 pt/m^2.
+
+Point density map           |  Point density histogram
+:-------------------------:|:-------------------------:
+![](figures/dir2019_pdens.png)  |  ![](figures/dir2019_histo_pdens_plot.png)
+
+## Conclusion
+
+Minimum requirement for data usability: 
+- Avoid mixing the tiles from different flight campaigns. Storing the different flight campaigns separately. (TODO: separate the point clouds and re-organize them according to flight campaigns) 
+
+Maximum requirements/wishes:
+- Standardized way of saving geographical information
+- Report about the overall vertical and horizontal accuracy
+- Report of how the classification have been carried out
+- Used scanners for the flight campaigns
+- Access to the trajectory files
