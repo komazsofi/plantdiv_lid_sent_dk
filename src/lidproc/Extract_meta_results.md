@@ -1,6 +1,6 @@
 ## Quality check of Danish country-wide ALS datasets
 
-This report aim to quality check the different danish country-wide ALS datasets on the AU server. The following directories were revised:
+This report aim is to quality check the different danish country-wide ALS datasets on the AU server. The following directories were revised:
 
 | directory name | expected flight campaign | adjusted GPS time |
 | --- |:---:| ---:|  
