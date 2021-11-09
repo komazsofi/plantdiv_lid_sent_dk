@@ -1,4 +1,4 @@
-## Quality check of Danish country-wide ALS datesets
+## Quality check of Danish country-wide ALS datasets
 
 This report aim to quality check the different danish country-wide ALS datasets on the AU server. The following directories were revised:
 
@@ -13,7 +13,7 @@ This report aim to quality check the different danish country-wide ALS datasets 
 
 ## KMS2007
 
-The metadata extraction was succesful, no corrupt files occured in the dataset. The issue with the directory is that the downloaded files did not cover the whole of the Denmark (big blocks are missing). Furthermore one tile (6123_485) has an outlier. The header file of the las files contain limited information: no adjusted GPStime, no georeferencing information possible to retrieve. However linking the tiles to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The data acquisition times are possible to retrieve from the trajectory data (TODO). The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08.
+The metadata extraction was successful, no corrupt files occurred in the dataset. The issue with the directory is that the downloaded files did not cover the whole of the Denmark (big blocks are missing). Furthermore one tile (6123_485) has an outlier. The header file of the las files contain limited information: no adjusted GPStime, no georeferencing information possible to retrieve. However linking the tiles to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The data acquisition times are possible to retrieve from the trajectory data (TODO). The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08.
 
 Based on visual exploration of random tiles the data is a first-last return LiDAR data and the point density is around 0.5 points/m^2. 
 
@@ -23,7 +23,7 @@ Point density map           |  Point density histogram
 
 ## DHM2007
 
-The metadata extraction was succesful, no corrupt files occured in the dataset. The directory contains all the tiles across Denmark. One tile (6123_485) has an outlier. The header file of the las files contain limited information: no adjusted GPStime, no georeferencing information possible to retrieve. However linking the tiles to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The data acquisition times possible to retrieve from the trajectory data (TODO). The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08. 
+The metadata extraction was successful, no corrupt files occurred in the dataset. The directory contains all the tiles across Denmark. One tile (6123_485) has an outlier. The header file of the las files contain limited information: no adjusted GPStime, no georeferencing information possible to retrieve. However linking the tiles to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The data acquisition times possible to retrieve from the trajectory data (TODO). The las files were extracted with either using TerraScan or CPS/RTW LAS Lib v1.08. 
 
 Based on visual exploration of random tiles the data is a first-last return LiDAR data and the point density is around 0.5 points/m^2. 
 
@@ -56,7 +56,7 @@ Point density map           |  Point density histogram
 
 ## 2015_2018
 
-The metadata extraction found 8 incorrect files however no error message were retrieved regarding these files (TODO: needs to be checked manually). 
+The metadata extraction found 8 incorrect files however no error message was retrieved regarding these files (TODO: needs to be checked manually). 
 
 The geographic information is mainly stored as epgs code within the laz files however 276 tiles do not contain geographic information, but linking them to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. The datasets were largely extracted with PDAL 1.3.0 and 1.5.0. Some files were extracted using TerraScan and one with CPS/RTW LAS Lib v1.08. The dataset contains LiDAR data from all three flight campaigns. The 2014/2015 LiDAR dataset were updated with the more recently measured dataset(s). Based on the minimum GPS time 9348 tiles contain data from 2006/2007 flight campaign as well as the 2018 measured region constains some tiles which were measured in 2015. 
 
@@ -96,6 +96,6 @@ Minimum requirement for data usability:
 Maximum requirements/wishes:
 - Standardized way of saving geographical information
 - Report about the overall vertical and horizontal accuracy
-- Report of how the classification have been carried out
+- Report about how the classification have been carried out
 - Used scanners for the flight campaigns
 - Access to the trajectory files
