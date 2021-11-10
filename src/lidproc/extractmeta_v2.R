@@ -14,11 +14,11 @@ library(lidR)
 library(dplyr)
 
 # Set working directories
-inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/test_diff_lasfiles/test2014_2/" #set this to the path where the laz (unzipped) files are located 
-outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/test_diff_lasfiles/" #set this to the path where the resulted files wished to be extracted
+inputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/DHM2015_unziperror/" #set this to the path where the laz (unzipped) files are located 
+outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/DHM2015_unziperror/" #set this to the path where the resulted files wished to be extracted
 lasinfoloc="C:/_Koma/LAStools/LAStools/bin/" #set this to the path where the lasinfo.exe file is located 
 lastype="laz" #set this either laz or las depending on how the lidar data is stored
-dirname="test2014_2" #set this based on the input directory name to name the file based on the directory origin
+dirname="DHM2015" #set this based on the input directory name to name the file based on the directory origin
 
 start_time <- Sys.time()
 
@@ -35,7 +35,7 @@ colnames(lasinfo) <- x
 
 ## set up parameters for the parallel process
 
-Nclust <- parallel::detectCores()-2
+Nclust <- parallel::detectCores()-3
 
 cl <-makeCluster(Nclust,outfile=paste(outputdirectory,dirname,"_log.txt",sep=""))
 registerDoSNOW(cl)
