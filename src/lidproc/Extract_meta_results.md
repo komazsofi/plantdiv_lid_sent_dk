@@ -54,7 +54,9 @@ Point density map           |  Point density histogram
 
 The dataset were measured both in leaf-off (november-march) and leaf-on (april-october) seasons.
 
-![](figures/GST_2014_months_inseason.png)
+Seasonality map          |  Seasonality histogram
+:-------------------------:|:-------------------------:
+![](figures/GST_2014_months_inseason.png)  |  ![](figures/GST_2014_histo_season_plot.png)
 
 ## DHM2015
 
@@ -80,7 +82,9 @@ Point density map           |  Point density histogram
 
 The dataset were measured both in leaf-off (november-march) and leaf-on (april-october) seasons.
 
-![](figures/DHM2015_months_inseason.png)
+Seasonality map          |  Seasonality histogram
+:-------------------------:|:-------------------------:
+![](figures/DHM2015_months_inseason.png)  |  ![](figures/DHM2015_histo_season_plot.png)
 
 ## 2015_2018
 
@@ -101,7 +105,9 @@ Point density map           |  Point density histogram
 
 The dataset were measured both in leaf-off (november-march) and leaf-on (april-october) seasons.
 
-![](figures/dir2015_2018_months_inseason.png)
+Seasonality map          |  Seasonality histogram
+:-------------------------:|:-------------------------:
+![](figures/dir2015_2018_months_inseason.png)  |  ![](figures/dir2015_2018_histo_season_plot.png)
 
 ## 2019
 
@@ -122,7 +128,9 @@ Point density map           |  Point density histogram
 
 The dataset were measured both in leaf-off (november-march) and leaf-on (april-october) seasons.
 
-![](figures/dir2019_months_inseason.png)
+Seasonality map          |  Seasonality histogram
+:-------------------------:|:-------------------------:
+![](figures/dir2019_months_inseason.png)  |  ![](figures/dir2019_histo_season_plot.png)
 
 ## Conclusion
 
