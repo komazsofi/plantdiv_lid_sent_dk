@@ -11,8 +11,8 @@ library(tidyverse)
 # Set parameters
 outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/"
 
-#file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/dir2015_2018_20211104_0935.shp"
-#dirname="dir2015_2018"
+file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/dir2015_2018_20211104_0935.shp"
+dirname="dir2015_2018"
 
 #file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/GST_2014_20211102_0549.shp"
 #dirname="GST_2014"
@@ -23,8 +23,8 @@ outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/"
 #file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/KMS2007_20211101_1227.shp"
 #dirname="KMS2007"
 
-file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/dir2019_20211108_0706.shp"
-dirname="dir2019"
+#file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/dir2019_20211108_0706.shp"
+#dirname="dir2019"
 
 #file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/DHM2015_20211111_1414.shp"
 #dirname="DHM2015"
@@ -142,4 +142,16 @@ histo_pdens <- ggplot(data = df, aes(x = allPntD)) + geom_histogram(binwidth=5)+
   theme_cowplot()
 
 save_plot(paste(outputdirectory,dirname,"_histo_pdens_plot",".png",sep=""), histo_pdens,
+          base_height = 6)
+
+df_season=df %>% group_by(months_inseason) %>% summarise(n = n())
+
+season_plot <- ggplot(data=df_season,aes(x=months_inseason,y=n,fill=as.factor(months_inseason)))+geom_col()+
+  labs(fill = "Seasonality", title = "Seasonality of the most recent tile acquisition") +
+  geom_text(data=df_season,aes(x=months_inseason,y=n+1000,label=n),inherit.aes = F)+
+  scale_y_continuous(limits = c(0,40000)) +
+  xlab("Seasonality") + ylab("Number of tiles") +
+  theme_cowplot()
+
+save_plot(paste(outputdirectory,dirname,"_histo_season_plot",".png",sep=""), season_plot,
           base_height = 6)
