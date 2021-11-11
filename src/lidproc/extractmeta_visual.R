@@ -23,21 +23,18 @@ outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/"
 #file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/KMS2007_20211101_1227.shp"
 #dirname="KMS2007"
 
-#file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/dir2019_20211108_0706.shp"
-#dirname="dir2019"
+file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/dir2019_20211108_0706.shp"
+dirname="dir2019"
 
-file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/DHM2015_20211110_1650.shp"
-dirname="DHM2015"
+#file="O:/Nat_Ecoinformatics-tmp/au700510/metadata_dklidar/DHM2015_20211111_1414.shp"
+#dirname="DHM2015"
 
 df = st_read(file)
-names(df)[4] <- "MinGpstime"
-names(df)[5] <- "MaxGpstime"
-names(df)[21] <- "allPointDens"
 
 # Maps
 
-df$year_rec <- paste(substring(df$MaxGpstime,1,4),sep="")
-df$year_rec [df$year_rec  == "2011"] <- NA
+df$year_rec <- paste(substring(df$MxGpstm,1,4),sep="")
+df$year_rec [df$year_rec  == "2011" | df$year_rec  == "2010"] <- NA
 df$year_rec <- as.factor(df$year_rec)
 
 recentyear_plot <-ggplot() +
@@ -52,8 +49,8 @@ recentyear_plot <-ggplot() +
 save_plot(paste(outputdirectory,dirname,"_recent_gpstime",".png",sep=""), recentyear_plot,
           base_height = 6)
 
-df$year_old <- paste(substring(df$MinGpstime,1,4),sep="")
-df$year_old [df$year_old  == "2011"] <- NA
+df$year_old <- paste(substring(df$MnGpstm,1,4),sep="")
+df$year_old [df$year_old  == "2011" | df$year_old  == "2010" ] <- NA
 df$year_old <- as.factor(df$year_old)
 
 oldestyear_plot <-ggplot() +
@@ -69,15 +66,15 @@ save_plot(paste(outputdirectory,dirname,"_oldest_gpstime",".png",sep=""), oldest
           base_height = 6)
 
 pdens_plot <-ggplot() +
-  geom_sf(data = df, aes(fill = allPointDens),colour = NA)+
+  geom_sf(data = df, aes(fill = allPntD),colour = NA)+
   scale_fill_gradient2(low = "blue", mid = "yellow", high = "red",limits=c(0, 25))+
   labs(fill = "Point density (all)", title = "Point density per tiles")+theme_cowplot()
 
 save_plot(paste(outputdirectory,dirname,"_pdens",".png",sep=""), pdens_plot,
           base_height = 6)
 
-df$months_rec <- paste(substring(df$MaxGpstime,6,7),sep="")
-df$months_rec [df$year_rec  == "2011"] <- NA
+df$months_rec <- paste(substring(df$MxGpstm,6,7),sep="")
+df$months_rec [df$year_rec  == "2011" | df$year_rec  == "2010"] <- NA
 df$months_rec <- as.factor(df$months_rec)
 
 recentmonths_plot <-ggplot() +
@@ -88,6 +85,22 @@ recentmonths_plot <-ggplot() +
   theme_cowplot()
 
 save_plot(paste(outputdirectory,dirname,"_recentmonths_gpstime",".png",sep=""), recentmonths_plot,
+          base_height = 6)
+
+df$months_inseason <- NA
+df$months_inseason [df$months_rec  == "01" | df$months_rec  == "02" | df$months_rec  == "03" | df$months_rec  == "11" | df$months_rec  == "12"] <- "leaf-off"
+df$months_inseason [df$months_rec  == "04" | df$months_rec  == "05" | df$months_rec  == "06" | df$months_rec  == "07" | df$months_rec  == "08" 
+                    | df$months_rec  == "09" | df$months_rec  == "10"] <- "leaf-on"
+df$months_inseason <- as.factor(df$months_inseason)
+
+months_inseason_plot <-ggplot() +
+  geom_sf(data = df,
+          aes(fill = months_inseason),
+          colour = NA) +
+  labs(fill = "Seasonality", title = "Seasonality of the most recent tile acquisition") +
+  theme_cowplot()
+
+save_plot(paste(outputdirectory,dirname,"_months_inseason",".png",sep=""), months_inseason_plot,
           base_height = 6)
 
 # Histograms
@@ -120,12 +133,12 @@ histo_old <- ggplot(data=df_sumyearold,aes(x=year_old,y=n,fill=as.factor(year_ol
 save_plot(paste(outputdirectory,dirname,"_histo_oldest_plot",".png",sep=""), histo_old,
           base_height = 6)
 
-histo_pdens <- ggplot(data = df, aes(x = allPointDens)) + geom_histogram(binwidth=5)+
+histo_pdens <- ggplot(data = df, aes(x = allPntD)) + geom_histogram(binwidth=5)+
   labs(title = "Point density histogram (all returns)",
        x = "All point density",
        y = "Number of tiles",
-       subtitle = paste0("Mean: ",round(mean(df$allPointDens),2), ", Median: ",round(median(df$allPointDens),2),
-                         ", Min: ",round(min(df$allPointDens),2),", Max: ",round(max(df$allPointDens),2)))+
+       subtitle = paste0("Mean: ",round(mean(df$allPntD),2), ", Median: ",round(median(df$allPntD),2),
+                         ", Min: ",round(min(df$allPntD),2),", Max: ",round(max(df$allPntD),2)))+
   theme_cowplot()
 
 save_plot(paste(outputdirectory,dirname,"_histo_pdens_plot",".png",sep=""), histo_pdens,
