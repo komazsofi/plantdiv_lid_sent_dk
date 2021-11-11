@@ -54,6 +54,27 @@ Point density map           |  Point density histogram
 
 ## DHM2015
 
+It has been already errors occurred during unzipping the files. My unzipping script skipped the following directories: 10km_614_57, 10km_615_53, 10km_622_52, 10km_622_53, 10km_633_54. It was possible to unzip them manually and add to the dataset later. One problematic file were identified and two additional files got the following error meassage during processing:
+
+"WARNING: 'chunk table and 44909292 bytes are missing. LAZ file truncated during
+copy or transfer?' 
+ERROR: 'end-of-file during chunk with index 51' after 2591397 of 10321753 points
+"
+
+The geographic information is largely not stored within the laz files, but linking them to epgs:25832 (ETR89 UTM 32 N based on the GRS80 spheroid) gives the correct geographic location. 200 tiles contain epgs code within the laz files. The laz files were extracted using CPS/RTW LAS Lib v1.08, PDAl 1.3.0, sspplash:DVR90 and TerraScan. The minimum GPS time shows mixing the different flight campaigns. Furthermore in some regions we lost the date of flight extraction dates.
+
+Oldest            |  Most recent
+:-------------------------:|:-------------------------:
+![](figures/DHM2015_oldest_gpstime.png)  |  ![](figures/DHM2015_recent_gpstime.png)
+![](figures/DHM2015_histo_oldest_plot.png)  |  ![](figures/DHM2015_histo_recent_plot.png)
+
+The dataset is a discrete-return LiDAR data with 4-5 recorded returns. The estimated mean point density calculated for all returns is 8 pt/m^2. 
+
+Point density map           |  Point density histogram
+:-------------------------:|:-------------------------:
+![](figures/DHM2015_pdens.png)  |  ![](figures/DHM2015_histo_pdens_plot.png)
+
+
 ## 2015_2018
 
 The metadata extraction found 8 incorrect files however no error message was retrieved regarding these files (TODO: needs to be checked manually). 
