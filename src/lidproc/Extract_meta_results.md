@@ -52,6 +52,10 @@ Point density map           |  Point density histogram
 :-------------------------:|:-------------------------:
 ![](figures/GST_2014_pdens.png)  |  ![](figures/GST_2014_histo_pdens_plot.png)
 
+The dataset were measured both in leaf-off (november-march) and leaf-on (april-october) seasons.
+
+![](figures/GST_2014_months_inseason.png)
+
 ## DHM2015
 
 It has been already errors occurred during unzipping the files. My unzipping script skipped the following directories: 10km_614_57, 10km_615_53, 10km_622_52, 10km_622_53, 10km_633_54. It was possible to unzip them manually and add to the dataset later. One problematic file were identified and two additional files got the following error meassage during processing:
@@ -74,6 +78,9 @@ Point density map           |  Point density histogram
 :-------------------------:|:-------------------------:
 ![](figures/DHM2015_pdens.png)  |  ![](figures/DHM2015_histo_pdens_plot.png)
 
+The dataset were measured both in leaf-off (november-march) and leaf-on (april-october) seasons.
+
+![](figures/DHM2015_months_inseason.png)
 
 ## 2015_2018
 
@@ -92,6 +99,10 @@ Point density map           |  Point density histogram
 :-------------------------:|:-------------------------:
 ![](figures/dir2015_2018_pdens.png)  |  ![](figures/dir2015_2018_histo_pdens_plot.png)
 
+The dataset were measured both in leaf-off (november-march) and leaf-on (april-october) seasons.
+
+![](figures/dir2015_2018_months_inseason.png)
+
 ## 2019
 
 The metadata extraction found 92 incorrect files however no error message were retrieved regarding these files (TODO: needs to be checked manually). 
@@ -108,6 +119,10 @@ The most recently measured LiDAR dataset is a fullwaveform ALS data. The estimat
 Point density map           |  Point density histogram
 :-------------------------:|:-------------------------:
 ![](figures/dir2019_pdens.png)  |  ![](figures/dir2019_histo_pdens_plot.png)
+
+The dataset were measured both in leaf-off (november-march) and leaf-on (april-october) seasons.
+
+![](figures/dir2019_months_inseason.png)
 
 ## Conclusion
 
