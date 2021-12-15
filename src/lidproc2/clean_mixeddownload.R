@@ -1,6 +1,10 @@
 library(tidyverse)
 library(sf)
 
+library(foreach)
+library(doSNOW)
+library(tcltk)
+
 # set working directories
 
 examined_dir="O:/Nat_Ecoinformatics-tmp/au700510/lidar_process/metainfo_extract/unzipped_dir2019/"
@@ -31,7 +35,17 @@ for (j in 1:length(subfolder_names)){
 
 # sort files
 
-for (i in 1:10) {
-  print(dir2019shp$tile_id[i])
+parallel::detectCores()
+n.cores <- parallel::detectCores() - 1
+my.cluster <- parallel::makeCluster(n.cores)
+registerDoSNOW(my.cluster)
+
+ntasks <- 10
+pb <- tkProgressBar(max=ntasks)
+progress <- function(n) setTkProgressBar(pb, n)
+opts <- list(progress=progress)
+
+foreach(i = 40:50, .options.snow=opts) %dopar% {
   file.copy(from=paste0(examined_dir,"PUNKTSKY_1km_",dir2019shp$tile_id[i],".laz"), to=paste0(examined_dir,"/", dir2019shp$year[i],"/","PUNKTSKY_1km_",dir2019shp$tile_id[i],".laz"))
 }
+
