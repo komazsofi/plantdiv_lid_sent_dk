@@ -40,12 +40,12 @@ n.cores <- parallel::detectCores() - 1
 my.cluster <- parallel::makeCluster(n.cores)
 registerDoSNOW(my.cluster)
 
-ntasks <- 10
+ntasks <- nrow(dir2019shp)
 pb <- tkProgressBar(max=ntasks)
 progress <- function(n) setTkProgressBar(pb, n)
 opts <- list(progress=progress)
 
-foreach(i = 40:50, .options.snow=opts) %dopar% {
+foreach(i = 1:nrow(dir2019shp), .options.snow=opts) %dopar% {
   file.copy(from=paste0(examined_dir,"PUNKTSKY_1km_",dir2019shp$tile_id[i],".laz"), to=paste0(examined_dir,"/", dir2019shp$year[i],"/","PUNKTSKY_1km_",dir2019shp$tile_id[i],".laz"))
 }
 
