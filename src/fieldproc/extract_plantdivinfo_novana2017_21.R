@@ -39,7 +39,6 @@ ggplot()+geom_sf(data = Denmark)+
 ## NOVANA extraction 2 (Dataset2005_2021)
 
 nov_extr2=read_sf("O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/Novana2/Dataset2005_2021.shp")
-
 nov_extr2$Year2 <- format(nov_extr2$STARTDA, format="%Y")
 
 # Visualization
@@ -48,6 +47,6 @@ ggplot(nov_extr2, aes(x = Year2, fill = PROGRAM)) +
   geom_histogram(stat="count",position = "dodge")+theme_bw()
 
 ggplot(data = nov_extr2)+
-  geom_sf()+
+  geom_sf(aes(color=PROGRAM))+
   facet_wrap(facets = vars(Year2))+
   theme_bw()
