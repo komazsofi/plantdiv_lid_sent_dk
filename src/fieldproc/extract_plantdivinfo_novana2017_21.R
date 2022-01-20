@@ -64,4 +64,7 @@ ggplot(data = nov_extr2)+
   facet_wrap(facets = vars(Year2))+
   theme_bw()
 
-nov_extr2_grouped <- nov_extr2 %>% group_by(AKTID)
+# Filter for year 2016-2020
+
+nov_extr2_sel=nov_extr2[(nov_extr2$Year2>2015 & nov_extr2$Year2<2021),]
+#nov_extr2_grouped <- nov_extr2_sel %>% group_by(AKTID) %>% summarise(n = n())
