@@ -69,5 +69,13 @@ ggplot(data = nov_extr2)+
 nov_extr2_sel=nov_extr2[(nov_extr2$Year2>2015 & nov_extr2$Year2<2021),]
 #nov_extr2_grouped <- nov_extr2_sel %>% group_by(AKTID) %>% summarise(n = n())
 
+nov_extr2_2018=nov_extr2[(nov_extr2$Year2==2016),]
+st_write(nov_extr2_2018,"O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/Novana2/nov_extr3_2016.shp")
+nov_extr2_2018=nov_extr2[(nov_extr2$Year2==2017),]
+st_write(nov_extr2_2018,"O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/Novana2/nov_extr3_2017.shp")
 nov_extr2_2018=nov_extr2[(nov_extr2$Year2==2018),]
 st_write(nov_extr2_2018,"O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/Novana2/nov_extr3_2018.shp")
+nov_extr2_2018=nov_extr2[(nov_extr2$Year2==2019),]
+st_write(nov_extr2_2018,"O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/Novana2/nov_extr3_2019.shp")
+nov_extr2_2018=nov_extr2[(nov_extr2$Year2==2020),]
+st_write(nov_extr2_2018,"O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/Novana2/nov_extr3_2020.shp")
