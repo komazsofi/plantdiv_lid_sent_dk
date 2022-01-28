@@ -53,21 +53,81 @@ ggplot(data = nov_extr2)+
 
 ## NOVANA extraction 3 (Dataset2005_2021)
 
-nov_extr2=read_sf("O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/Novana2/Dataset2005_2021_v2.shp")
-nov_extr2$Year2 <- format(nov_extr2$STARTDA, format="%Y")
+nov_extr3=read_sf("O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/Novana2/Dataset2005_2021_v2.shp")
+nov_extr3$Year2 <- format(nov_extr3$STARTDA, format="%Y")
 
-ggplot(nov_extr2, aes(x = Year2, fill = NATURTY)) +
+ggplot(nov_extr3, aes(x = Year2, fill = NATURTY)) +
   geom_histogram(stat="count",position = "dodge",show.legend = FALSE)+theme_bw()
 
-ggplot(data = nov_extr2)+
+ggplot(data = nov_extr3)+
   geom_sf(aes(color=PROGRAM))+
   facet_wrap(facets = vars(Year2))+
   theme_bw()
 
 # Filter for year 2016-2020
 
-nov_extr2_sel=nov_extr2[(nov_extr2$Year2>2015 & nov_extr2$Year2<2021),]
-#nov_extr2_grouped <- nov_extr2_sel %>% group_by(AKTID) %>% summarise(n = n())
+nov_extr3_sel=nov_extr3[(nov_extr3$Year2>2015 & nov_extr3$Year2<2021),]
+
+nov_extr3_overg=nov_extr3_sel[nov_extr3_sel$PROGRAM=="Overvågning af naturtyper",]
+nov_extr3_bes=nov_extr3_sel[nov_extr3_sel$PROGRAM=="Besigtigelser",]
+nov_extr3_kort=nov_extr3_sel[nov_extr3_sel$PROGRAM=="Kortlægning af naturtyper",]
+
+nov_extr3_overg$HabitatCode=NA
+
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Klithede']="2140"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Revling-indlandsklit']="2320"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Rigkær']="7230"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Havtornklit']="2160"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Græs-indlandsklit']="2330"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Kystklint/klippe']="1230"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Enekrat']="5130"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Højmose']="7110"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Hvid klit']="2120"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Klitlavning']="2190"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Visse-indlandsklit']="2310"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Enårig strandengsvegetation']="1310"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Enebærklit']="2250"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Strandvold med enårige']="1210"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Vadegræssamfund']="1320"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Kildevæld']="7220"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Grå/grøn klit']="2130"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Surt overdrev']="6230"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Tør hede']="4030"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Grårisklit']="2170"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Indlandsklippe']="8220"
+nov_extr3_overg$HabitatCode[nov_extr3_overg$NATURTY=='Indlandssalteng']="1340"
+
+nov_extr3_overg$HabitatCodeGroup=NA
+
+nov_extr3_overg$HabitatCodeGroup[nov_extr3_overg$HabitatCode == "1210" | nov_extr3_overg$HabitatCode == "1220" | nov_extr3_overg$HabitatCode == "1230" | nov_extr3_overg$HabitatCode == "1310"
+                                 | nov_extr3_overg$HabitatCode == "1320" | nov_extr3_overg$HabitatCode == "1330" | nov_extr3_overg$HabitatCode == "1340" ]="Beaches and salt marshes"
+nov_extr3_overg$HabitatCodeGroup[nov_extr3_overg$HabitatCode == "2110" | nov_extr3_overg$HabitatCode == "2120" | nov_extr3_overg$HabitatCode == "2130" | nov_extr3_overg$HabitatCode == "2140"
+                                 | nov_extr3_overg$HabitatCode == "2160" | nov_extr3_overg$HabitatCode == "2170" | nov_extr3_overg$HabitatCode == "2190" | nov_extr3_overg$HabitatCode == "2250" ]="Coastal dunes"
+nov_extr3_overg$HabitatCodeGroup[nov_extr3_overg$HabitatCode == "2310" | nov_extr3_overg$HabitatCode == "2320" | nov_extr3_overg$HabitatCode == "2330" | nov_extr3_overg$HabitatCode == "4010"
+                                 | nov_extr3_overg$HabitatCode == "4030" | nov_extr3_overg$HabitatCode == "5130" ]="Inland dunes, heath and scrub"
+nov_extr3_overg$HabitatCodeGroup[nov_extr3_overg$HabitatCode == "6120" | nov_extr3_overg$HabitatCode == "6210" | nov_extr3_overg$HabitatCode == "6230" | nov_extr3_overg$HabitatCode == "6410" ]="Over grazing and meadows"
+nov_extr3_overg$HabitatCodeGroup[nov_extr3_overg$HabitatCode == "7110" | nov_extr3_overg$HabitatCode == "7120" | nov_extr3_overg$HabitatCode == "7140" | nov_extr3_overg$HabitatCode == "7150"
+                                 | nov_extr3_overg$HabitatCode == "7210" | nov_extr3_overg$HabitatCode == "7220"  | nov_extr3_overg$HabitatCode == "7230" ]="Bog"
+nov_extr3_overg$HabitatCodeGroup[nov_extr3_overg$HabitatCode == "8220" ]="Mower"
+nov_extr3_overg$HabitatCodeGroup[nov_extr3_overg$HabitatCode == "2180" | nov_extr3_overg$HabitatCode == "9110" | nov_extr3_overg$HabitatCode == "9120" | nov_extr3_overg$HabitatCode == "9130"
+                                 | nov_extr3_overg$HabitatCode == "9150" | nov_extr3_overg$HabitatCode == "9160" | nov_extr3_overg$HabitatCode == "9170" | nov_extr3_overg$HabitatCode == "9190"]="Forest"
+
+
+# Analysis
+
+ranked_natty_overg=nov_extr3_overg %>% 
+  group_by(nov_extr3_overg$HabitatCode) %>%
+  summarize(Count=n()) %>%
+  mutate(Percent = round((Count/sum(Count)*100))) %>%
+  arrange(desc(Count))
+
+ranked_natty_overg=nov_extr3_overg %>% 
+  group_by(nov_extr3_overg$HabitatCodeGroup,nov_extr3_overg$Year2) %>%
+  summarize(Count=n()) %>%
+  mutate(Percent = round((Count/sum(Count)*100))) %>%
+  arrange(desc(Count))
+
+# Export
 
 nov_extr2_2018=nov_extr2[(nov_extr2$Year2==2016),]
 st_write(nov_extr2_2018,"O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/Novana2/nov_extr3_2016.shp")
