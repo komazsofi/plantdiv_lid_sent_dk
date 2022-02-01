@@ -121,8 +121,14 @@ ranked_natty_overg=nov_extr3_overg %>%
   mutate(Percent = round((Count/sum(Count)*100))) %>%
   arrange(desc(Count))
 
-ranked_natty_overg=nov_extr3_overg %>% 
-  group_by(nov_extr3_overg$HabitatCodeGroup,nov_extr3_overg$Year2) %>%
+ranked_natty_kort=nov_extr3_kort %>% 
+  group_by(nov_extr3_kort$HabitatCodeGroup,nov_extr3_kort$Year2) %>%
+  summarize(Count=n()) %>%
+  mutate(Percent = round((Count/sum(Count)*100))) %>%
+  arrange(desc(Count))
+
+ranked_natty_kort=nov_extr3_kort %>% 
+  group_by(nov_extr3_kort$NATURTY) %>%
   summarize(Count=n()) %>%
   mutate(Percent = round((Count/sum(Count)*100))) %>%
   arrange(desc(Count))
@@ -139,3 +145,4 @@ nov_extr2_2018=nov_extr2[(nov_extr2$Year2==2019),]
 st_write(nov_extr2_2018,"O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/Novana2/nov_extr3_2019.shp")
 nov_extr2_2018=nov_extr2[(nov_extr2$Year2==2020),]
 st_write(nov_extr2_2018,"O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/Novana2/nov_extr3_2020.shp")
+
