@@ -52,6 +52,32 @@ csvs_grouped$day <- format(csvs_grouped$date, format="%d")
 # add this info to polygon
 
 joined_DHM2017 = DHM2017 %>% left_join(csvs_grouped, by = "BlockID")
-st_write(joined_DHM2017, "O:/Nat_Ecoinformatics-tmp/au700510_2022_1/lidarprocess/extract_info_from_flightlines/DHM2017_joined_maxlengthtrajdate.shp")
+st_write(joined_DHM2017, "O:/Nat_Ecoinformatics-tmp/au700510_2022_1/lidarprocess/extract_info_from_flightlines/DHM2017_joined_maxlengthtrajdate_v2.shp")
 
+# visualize
+
+library(ggplot2)
+library(cowplot)
+library(sf)
+library(tidyverse)
+
+outputdirectory="O:/Nat_Ecoinformatics-tmp/au700510_2022_1/lidarprocess/extract_info_from_flightlines/"
+
+file="O:/Nat_Ecoinformatics-tmp/au700510_2022_1/lidarprocess/extract_info_from_flightlines/DHM2017_joined_maxlengthtrajdate_v2.shp"
+dirname="DHM2017"
+
+df = st_read(file)
+
+df$year_rec <- as.factor(df$year_1)
+
+recentyear_plot <-ggplot() +
+  geom_sf(data = df,
+          aes(fill = year_rec),
+          colour = NA) +
+  labs(fill = "Year", title = "Most recent tile acquisition years") +
+  scale_fill_manual(values = c("2005" = "darkviolet", "2006" = "brown","2007" = "gold"))+
+  theme_cowplot()
+
+save_plot(paste(outputdirectory,dirname,"_trajtime",".png",sep=""), recentyear_plot,
+          base_height = 6)
 
