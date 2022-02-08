@@ -68,6 +68,14 @@ ggplot(data = nov_extr3)+
 
 nov_extr3_sel=nov_extr3[(nov_extr3$Year2>2015 & nov_extr3$Year2<2021),]
 
+# Aanalysis
+
+ranked_natty=nov_extr3_sel %>% 
+  group_by(nov_extr3_sel$NATURTY,nov_extr3_sel$Year2) %>%
+  summarize(Count=n()) %>%
+  mutate(Percent = round((Count/sum(Count)*100))) %>%
+  arrange(desc(Count))
+
 nov_extr3_overg=nov_extr3_sel[nov_extr3_sel$PROGRAM=="Overvågning af naturtyper",]
 nov_extr3_bes=nov_extr3_sel[nov_extr3_sel$PROGRAM=="Besigtigelser",]
 nov_extr3_kort=nov_extr3_sel[nov_extr3_sel$PROGRAM=="Kortlægning af naturtyper",]
@@ -116,22 +124,11 @@ nov_extr3_overg$HabitatCodeGroup[nov_extr3_overg$HabitatCode == "2180" | nov_ext
 # Analysis
 
 ranked_natty_overg=nov_extr3_overg %>% 
-  group_by(nov_extr3_overg$HabitatCode) %>%
+  group_by(nov_extr3_overg$HabitatCode,nov_extr3_overg$Year2) %>%
   summarize(Count=n()) %>%
   mutate(Percent = round((Count/sum(Count)*100))) %>%
   arrange(desc(Count))
 
-ranked_natty_kort=nov_extr3_kort %>% 
-  group_by(nov_extr3_kort$HabitatCodeGroup,nov_extr3_kort$Year2) %>%
-  summarize(Count=n()) %>%
-  mutate(Percent = round((Count/sum(Count)*100))) %>%
-  arrange(desc(Count))
-
-ranked_natty_kort=nov_extr3_kort %>% 
-  group_by(nov_extr3_kort$NATURTY) %>%
-  summarize(Count=n()) %>%
-  mutate(Percent = round((Count/sum(Count)*100))) %>%
-  arrange(desc(Count))
 
 # Export
 
