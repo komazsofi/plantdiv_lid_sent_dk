@@ -32,7 +32,7 @@ mosaicList <- function(rasList){
   return(mos)
 }
 
-workingdirectory="O:/Nat_Ecoinformatics-tmp/au700510_2022_1/satelliteprocess/sentinel2/Febr3_sent2_allbands/atmcorr/"
+workingdirectory="O:/Nat_Ecoinformatics-tmp/au700510_2022_1/satelliteprocess/sentinel2/test_febr15/"
 setwd(workingdirectory)
 
 filelist=list.files(pattern = "*.tif")
@@ -45,7 +45,7 @@ for (i in filelist) {
   print(i)
   
   radarraster=stack(i)
-  writeRaster(radarraster, filename=paste("O:/Nat_Ecoinformatics-tmp/au700510_2022_1/satelliteprocess/sentinel2/Febr3_sent2_allbands/atmcorr/processed/",str_remove(i, ".tif"),"_",names(radarraster),sep=""), bylayer=TRUE,format="GTiff")
+  writeRaster(radarraster, filename=paste("O:/Nat_Ecoinformatics-tmp/au700510_2022_1/satelliteprocess/sentinel2/test_febr15/processed/",str_remove(i, ".tif"),"_",names(radarraster),sep=""), bylayer=TRUE,format="GTiff")
   
 }
 
@@ -54,7 +54,7 @@ feanames=names(feanames)
 
 rm(radarraster)
 
-workingdirectory="O:/Nat_Ecoinformatics-tmp/au700510_2022_1/satelliteprocess/sentinel2/Febr3_sent2_allbands/atmcorr/processed/"
+workingdirectory="O:/Nat_Ecoinformatics-tmp/au700510_2022_1/satelliteprocess/sentinel2/test_febr15/processed/"
 setwd(workingdirectory)
 
 for (j in feanames) {
@@ -63,6 +63,6 @@ for (j in feanames) {
   files_permetric=list.files(pattern = paste("*",j,".tif",sep=""))
   metric=mosaicList(files_permetric)
   
-  writeRaster(metric,paste("O:/Nat_Ecoinformatics-tmp/au700510_2022_1/satelliteprocess/sentinel2/Febr3_sent2_allbands/atmcorr/processed/merged/",j,".tif",sep=""),overwrite=TRUE)
+  writeRaster(metric,paste("O:/Nat_Ecoinformatics-tmp/au700510_2022_1/satelliteprocess/sentinel2/test_febr15/processed/merged/",j,".tif",sep=""),overwrite=TRUE)
   
 }
