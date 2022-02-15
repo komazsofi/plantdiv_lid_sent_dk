@@ -1,11 +1,21 @@
 library(raster)
 library(SpaDES)
 
-dtm_bro=raster("O:/Nat_Ecoinformatics-tmp/au700510_2022_1/lidarprocess/retileDTM/DTM_bro_622_59.asc")
+setwd("O:/Nat_Ecoinformatics-tmp/au700510_2022_1/lidarprocess/retileDTM/test2/")
 
-sections=splitRaster(dtm_bro, nx=10, ny=10, path="O:/Nat_Ecoinformatics-tmp/au700510_2022_1/lidarprocess/retileDTM/retile/")
+asc_list=list.files(pattern = "*.asc")
 
-setwd("O:/Nat_Ecoinformatics-tmp/au700510_2022_1/lidarprocess/retileDTM/retile/")
+for (k in asc_list) {
+  
+  dtm_bro=raster(k)
+  sections=splitRaster(dtm_bro, nx=10, ny=10, path="O:/Nat_Ecoinformatics-tmp/au700510_2022_1/lidarprocess/retileDTM/test2/retile/")
+  
+}
+
+#dtm_bro=raster("O:/Nat_Ecoinformatics-tmp/au700510_2022_1/lidarprocess/retileDTM/DTM_bro_622_59.asc")
+#sections=splitRaster(dtm_bro, nx=10, ny=10, path="O:/Nat_Ecoinformatics-tmp/au700510_2022_1/lidarprocess/retileDTM/retile/")
+
+setwd("O:/Nat_Ecoinformatics-tmp/au700510_2022_1/lidarprocess/retileDTM/test2/retile/")
 
 tiled_grds=list.files(pattern = "*.grd")
 
