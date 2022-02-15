@@ -8,6 +8,9 @@ nov_extr3$Year2 <- format(nov_extr3$STARTDA, format="%Y")
 
 nov_extr3_sel=nov_extr3[(nov_extr3$Year2>2015 & nov_extr3$Year2<2021),]
 
+
+Denmark <- readRDS("O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/DK_Shape.rds")
+
 # Make groups
 
 ##
@@ -24,8 +27,8 @@ nov_extr3_sel_naturedry_meadows <- nov_extr3_sel %>% filter(NATURTY %in% c("Tør
 
 # Analysis
 
-ggplot(nov_extr3_sel_naturedry_meadows, aes(x = Year2, y = N_Specs)) +
-  geom_boxplot()+theme_bw()
+ggplot(nov_extr3_sel_naturedry_meadows, aes(x = Year2, y = N_Specs, fill=PROGRAM)) +
+  geom_boxplot()+theme_bw(base_size = 22)+xlab("Year")+ylab("Species richness")
 
 ggplot(nov_extr3_sel_naturedry_meadows, aes(x = Year2, y = N_Str_S)) +
   geom_boxplot()+theme_bw()
@@ -36,6 +39,23 @@ ggplot(nov_extr3_sel_naturedry_meadows, aes(x = Year2, y = N_2_S_S)) +
 nov_extr3_sel_naturedry_meadows %>% 
   group_by(nov_extr3_sel_naturedry_meadows$Year) %>%
   summarize(Count=n())
+
+# Map
+
+nov_extr3_sel_naturedry_meadows_sf=sf::st_as_sf(nov_extr3_sel_naturedry_meadows, coords = geometry, crs = 25832)
+st_crs(nov_extr3_sel_naturedry_meadows_sf) <- 25832
+
+ggplot()+geom_sf(data = Denmark)+
+  geom_sf(data = nov_extr3_sel_naturedry_meadows_sf[nov_extr3_sel_naturedry_meadows_sf$Year2==2016,], aes(colour=N_Specs))+theme_bw()+
+  scale_colour_gradient2(limits = c(0, 60))+ggtitle("2016")
+
+ggplot()+geom_sf(data = Denmark)+
+  geom_sf(data = nov_extr3_sel_naturedry_meadows_sf[nov_extr3_sel_naturedry_meadows_sf$Year2==2018,], aes(colour=N_Specs))+theme_bw()+
+  scale_colour_gradient2(limits = c(0, 60))+ggtitle("2018")
+
+ggplot()+geom_sf(data = Denmark)+
+  geom_sf(data = nov_extr3_sel_naturedry_meadows_sf[nov_extr3_sel_naturedry_meadows_sf$Year2==2020,], aes(colour=N_Specs))+theme_bw()+
+  scale_colour_gradient2(limits = c(0, 60))+ggtitle("2020")
 
 ##
 
@@ -124,3 +144,4 @@ nov_extr3_sel_naturewet_meadow %>%
 # Export
 
 st_write(nov_extr3_sel_naturedry_meadows,"O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/Novana2/nov_extr3_sel_naturedry_meadows.shp")
+st_write(nov_extr3_sel_naturedry_meadows[nov_extr3_sel_naturedry_meadows$Year2==2020,],"O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/Novana2/nov_extr3_sel_naturedry_meadows_2020.shp")
