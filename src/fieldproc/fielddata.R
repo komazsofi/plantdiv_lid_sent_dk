@@ -40,6 +40,10 @@ nov_extr3_sel_naturedry_meadows %>%
   group_by(nov_extr3_sel_naturedry_meadows$Year) %>%
   summarize(Count=n())
 
+ggplot(nov_extr3_sel_naturedry_meadows,aes(x=N_Specs,fill=Year2))+geom_histogram()+facet_wrap(~Year2)+theme_bw(base_size = 22)+xlab("Count")+ylab("Species Richness")
+ggplot(nov_extr3_sel_naturedry_meadows,aes(x=N_Str_S,fill=Year2))+geom_histogram()+facet_wrap(~Year2)+theme_bw(base_size = 22)+xlab("Count")+ylab("Species Richness - 1 star")
+ggplot(nov_extr3_sel_naturedry_meadows,aes(x=N_2_S_S,fill=Year2))+geom_histogram()+facet_wrap(~Year2)+theme_bw(base_size = 22)+xlab("Count")+ylab("Species Richness - 2 star")
+
 # Map
 
 nov_extr3_sel_naturedry_meadows_sf=sf::st_as_sf(nov_extr3_sel_naturedry_meadows, coords = geometry, crs = 25832)
