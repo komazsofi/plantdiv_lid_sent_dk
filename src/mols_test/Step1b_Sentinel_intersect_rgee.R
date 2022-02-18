@@ -41,7 +41,7 @@ getNDVI <- function(image) {
 s2_mols_points <- s2$
   filterBounds(Mols_nov_points_sf_geom)$
   filter(ee$Filter$lte("CLOUDY_PIXEL_PERCENTAGE", 15))$
-  filter(ee$Filter$date('2018-01-01', '2020-12-31'))$map(getNDVI)
+  filter(ee$Filter$date('2017-01-01', '2021-12-31'))$map(getNDVI)
 
 nimages <- s2_mols_points$size()$getInfo()
 ic_date <- ee_get_date_ic(s2_mols_points)
