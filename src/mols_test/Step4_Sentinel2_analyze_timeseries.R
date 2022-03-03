@@ -10,7 +10,7 @@ setwd(workingdirectory)
 
 # Import
 
-filelist=list.files(pattern = "*_bsi.tif")
+filelist=list.files(pattern = "*_sipi.tif")
 all_predictor=stack(filelist)
 
 plants=readOGR(dsn="O:/Nat_Ecoinformatics-tmp/au700510_2022_1/fielddata/Novana2/nov_extr3_2016.shp")
@@ -50,5 +50,6 @@ ggplot(metrics_forvis_melted, aes(x = doy, y = value))+
   geom_line(aes(color = as.character(ID)),size=1)+
   theme_bw(base_size = 20)+
   xlab("Day of the year")+
-  ylab("NDVI variation")
+  ylab("NDVI variation")+
+  ylim(c(0,2))
 

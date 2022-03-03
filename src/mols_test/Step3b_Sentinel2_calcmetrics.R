@@ -12,25 +12,24 @@ for (i in filelist){
   
   raster=stack(i)
   #NDVI=(raster$B8-raster$B4)/(raster$B8+raster$B4)
-  BSI=((raster$B11+raster$B4)-(raster$B8+raster$B2))/((raster$B11+raster$B4)+(raster$B8+raster$B2))
+  #BSI=((raster$B11+raster$B4)-(raster$B8+raster$B2))/((raster$B11+raster$B4)+(raster$B8+raster$B2))
+  SIPI=(raster$B8-raster$B1)/(raster$B8-raster$B4)
+  EVI= 2.5 * (raster$B8 - raster$B4) / ((raster$B8 + 6.0 * raster$B4 - 7.5 * raster$B2) + 1.0)
+  GNDVI=(raster$B8-raster$B3)/(raster$B8+raster$B3)
   
-  beginCluster(2)
+  #beginCluster(2)
   
   #sd_ndvi=clusterR(NDVI, focal, args=list(w=matrix(1,3,3), fun=sd, pad=TRUE,na.rm = TRUE))
-  sd_bsi=clusterR(BSI, focal, args=list(w=matrix(1,3,3), fun=sd, pad=TRUE,na.rm = TRUE))
+  #sd_bsi=clusterR(BSI, focal, args=list(w=matrix(1,3,3), fun=sd, pad=TRUE,na.rm = TRUE))
   
-  endCluster()
+  #endCluster()
   
   #writeRaster(NDVI,paste0(substr(i,1,38),"_ndvi.tif"),overwrite=TRUE)
   #writeRaster(sd_ndvi,paste0(substr(i,1,38),"_ndvi_sd.tif"),overwrite=TRUE)
-  writeRaster(BSI,paste0(substr(i,1,38),"_bsi.tif"),overwrite=TRUE)
-  writeRaster(sd_bsi,paste0(substr(i,1,38),"_bsi_sd.tif"),overwrite=TRUE)
+  #writeRaster(BSI,paste0(substr(i,1,38),"_bsi.tif"),overwrite=TRUE)
+  #writeRaster(sd_bsi,paste0(substr(i,1,38),"_bsi_sd.tif"),overwrite=TRUE)
+  writeRaster(SIPI,paste0(substr(i,1,38),"_sipi.tif"),overwrite=TRUE)
+  writeRaster(EVI,paste0(substr(i,1,38),"_evi.tif"),overwrite=TRUE)
+  writeRaster(GNDVI,paste0(substr(i,1,38),"_gndvi.tif"),overwrite=TRUE)
   
 }
-
-
-#NDVI=(raster$B8-raster$B4)/(raster$B8+raster$B4)
-#BSI=((raster$B11+raster$B4)-(raster$B8+raster$B2))/((raster$B11+raster$B4)+(raster$B8+raster$B2))
-#SIPI=(raster$B8-raster$B1)/(raster$B8-raster$B4)
-#EVI= 2.5 * (raster$B8 - raster$B4) / ((raster$B8 + 6.0 * raster$B4 - 7.5 * raster$B2) + 1.0)
-#GNDVI=(raster$B8-raster$B3)/(raster$B8+raster$B3)
