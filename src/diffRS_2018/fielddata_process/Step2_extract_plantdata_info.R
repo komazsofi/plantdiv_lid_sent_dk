@@ -47,5 +47,17 @@ novana_2018_withinlidar_natgroup=novana_2018_withinlidar %>%
   group_by(novana_2018_withinlidar$Nature_Group) %>%
   summarize(Count=n())
 
+novana_2018_withinlidar_natgroup2=novana_2018_withinlidar %>% 
+  group_by(novana_2018_withinlidar$Nature_Group,novana_2018_withinlidar$NATURTYPE) %>%
+  summarize(Count=n())
+
+names(novana_2018_withinlidar_natgroup2)<-c("Nature_Group","Natur type","Count","geometry")
+
+ggplot(novana_2018_withinlidar_natgroup2[novana_2018_withinlidar_natgroup2$Nature_Group=="Forest",], aes(x="", y=Count, fill=`Natur type`),size=3) +
+  geom_bar(stat="identity", width=1, color="white") +
+  coord_polar("y", start=0) +
+  theme_void(base_size = 25)
+
 # export
 
+st_write(novana_2018_withinlidar,"O:/Nat_Ecoinformatics-tmp/au700510_2022_1/_DiffRS_v2/2018/novana_2018_withinlidar.shp")
