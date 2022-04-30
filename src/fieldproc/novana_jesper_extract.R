@@ -5,10 +5,12 @@ library(sp)
 library(raster)
 library(rgeos)
 library(rgdal)
+library(kableExtra)
 
-setwd("O:/Nat_Sustain-proj/_user/ZsofiaKoma_au700510/DiffRS/Field_data/ForZsofia/NOVANAAndP3_tozsofia/")
+#("O:/Nat_Sustain-proj/_user/ZsofiaKoma_au700510/DiffRS/Field_data/ForZsofia/NOVANAAndP3_tozsofia/")
+setwd("G:/My Drive/_Aarhus/_PostDoc/_Paper1_diffRS_plantdiv/1_Datasets/Field_data/ForZsofia/NOVANAAndP3_tozsofia/")
 data<-as.data.frame(fread("NOVANAAndP3_tozsofia.tsv"))
-biowide_dk = readOGR(dsn="O:/Nat_Sustain-proj/_user/ZsofiaKoma_au700510/DiffRS/Field_data/biowide_zones.shp")
+biowide_dk = readOGR(dsn="biowide_zones.shp")
 
 data=data[data$Yeare>2015,]
 
@@ -33,19 +35,21 @@ raster::shapefile(data_plot_forshp,"Novana_plots_utm",overwrite=TRUE)
 data_plot_forshp_biow=raster::intersect(data_plot_forshp,biowide_dk)
 names(data_plot_forshp_biow) <- c("AktID","Year","Habitat","HabitatID","SpRichness","Region")
 
-# how many plots per year per habitat types
-
 data_plot_forshp_biow_df=data_plot_forshp_biow@data
 
-nofplots_perhabitats=data_plot_forshp_biow_df %>% 
-  group_by(data_plot_forshp_biow_df$Habitat,data_plot_forshp_biow_df$HabitatID,data_plot_forshp_biow_df$Region) %>%
-  summarize(Count=n())
+# for single year: how many plots per habitat per region
 
-nofplots_perhabitats_peryear=data_plot_forshp_biow_df %>% 
-  group_by(data_plot_forshp_biow_df$Habitat,data_plot_forshp_biow_df$HabitatID,data_plot_forshp_biow_df$Year,data_plot_forshp_biow_df$Region) %>%
-  summarize(Count=n())
+nofplots_perhabreg_yearly=data_plot_forshp_biow_df %>% 
+  group_by(HabitatID,Region, Year) %>%
+  summarize(Count=n()) %>%
+  spread(Year, Count) %>% 
+  ungroup()
 
-# how many plots per danish regions and per year and per habitat types
+nofplots_perhab_yearly=data_plot_forshp_biow_df %>% 
+  group_by(HabitatID, Year) %>%
+  summarize(Count=n()) %>%
+  spread(Year, Count) %>% 
+  ungroup()
 
 # spatial distribution
 
