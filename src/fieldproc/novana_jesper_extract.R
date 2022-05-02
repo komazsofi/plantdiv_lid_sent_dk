@@ -8,8 +8,8 @@ library(rgdal)
 library(kableExtra)
 library(xlsx)
 
-#("O:/Nat_Sustain-proj/_user/ZsofiaKoma_au700510/DiffRS/Field_data/ForZsofia/NOVANAAndP3_tozsofia/")
-setwd("G:/My Drive/_Aarhus/_PostDoc/_Paper1_diffRS_plantdiv/1_Datasets/Field_data/ForZsofia/NOVANAAndP3_tozsofia/")
+setwd("O:/Nat_Sustain-proj/_user/ZsofiaKoma_au700510/DiffRS/Field_data/ForZsofia/NOVANAAndP3_tozsofia/")
+#setwd("G:/My Drive/_Aarhus/_PostDoc/_Paper1_diffRS_plantdiv/1_Datasets/Field_data/ForZsofia/NOVANAAndP3_tozsofia/")
 data<-as.data.frame(fread("NOVANAAndP3_tozsofia.tsv",encoding="UTF-8"))
 biowide_dk = readOGR(dsn="biowide_zones.shp")
 
